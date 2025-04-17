@@ -34,6 +34,19 @@ JavaPOS/
 
 ---
 
+
+## 🗃️ Database Setup
+
+All database creation and sample data files are located in the [`/db`](./db) folder.
+
+Please follow the guide in [`db/README.md`](./db/README.md) to:
+
+- Create the `POS` database
+- Import table structure (`init.sql`)
+- Add test data (`seed.sql`)
+- Get default login credentials
+
+
 ## 🧰 Technologies Used
 
 - Java 8+
@@ -94,7 +107,7 @@ http://localhost:8080/JavaPOS
 - Shree Ram Shrestha  
 - Parshant GC  
 - Saksham Thakuri  
-- Ritik  
+- Ritik Kunwar
 
 ---
 
@@ -157,8 +170,29 @@ git push origin feature/dashboard
 - Make sure DB has test users (admin, cashier, waiter)
 - Use the right username/password
 
----
 
-## 📖 License
 
-This project is open-source and available under the MIT License.
+
+
+###
+
+#to clone the Repository
+git clone https://github.com/catalansubanta/JavaPOS.git
+cd JavaPOS
+
+# Then create a new branch before working on a feature
+git checkout - b feature/your-feature-name
+(git checkout -b feature/dashboard)
+
+# To add and commit 
+git add .
+git commit -m "Add feature: dashboard layout"
+
+# Push to github
+git push origin feature/dashboard
+
+
+
+###### Do not push to main unless you're sure!
+## always pull the latest changes before working
+git pull origin main
