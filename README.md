@@ -1,198 +1,162 @@
-# JavaPOS – Web-based Point of Sale System 💻🧾
-
-A modern, lightweight, web-based POS (Point of Sale) system built using **Java Servlets**, **JSP**, and **MySQL**. Designed for restaurants or cafes with multi-role user support: admin, cashier, and waiter.
-
----
+#### JavaPOS – Web-based Point of Sale System 💻🧾
+A modern, lightweight web-based POS (Point of Sale) system built using Java Servlets, JSP, and MySQL. It supports multi-role users: Admin, Cashier, and Waiter — perfect for restaurants or cafes.
 
 ## 🚀 Features
+✅ User Login System (Admin, Cashier, Waiter)
 
-- ✅ User Login System (Admin, Cashier, Waiter)
-- ✅ Order and Cart Management
-- ✅ Menu Items and Categories
-- ✅ Payments and Order Tracking
-- ✅ Dynamic Role-based Dashboards
-- ✅ Clean UI with HTML, CSS, and Bootstrap (optional)
+✅ Order and Cart Management
 
----
+✅ Menu Items and Categories
 
-## 📂 Project Structure
+✅ Payments and Order Tracking
 
-```
+✅ Role-based Dashboards
+
+✅ Clean UI using HTML, CSS (Bootstrap optional)
+
+## 📁 Project Structure
+
 JavaPOS/
 ├── src/
 │   └── main/
-│       ├── java/com/javapos/...     # Java code (controller, dao, database)
-│       ├── resources/               # Resource files (if any)
-│       └── webapp/                  # JSP pages, css, WEB-INF
+│       ├── java/com/javapos/...     # Java code
+│       ├── resources/               # Config files (if any)
+│       └── webapp/                  # JSP, CSS, WEB-INF
 │           ├── login.jsp
 │           ├── dashboard.jsp
 │           ├── css/
 │           └── WEB-INF/web.xml
-├── pom.xml                         # Maven project file
-└── README.md                       # This file
-```
-
----
-
-
+├── db/
+│   ├── init.sql                     # Table structure
+│   └── seed.sql                     # Sample data
+├── pom.xml                          # Maven build file
+└── README.md                        # This file
 ## 🗃️ Database Setup
+The database files are in the /db folder.
 
-All database creation and sample data files are located in the [`/db`](./db) folder.
+To set up:
 
-Please follow the guide in [`db/README.md`](./db/README.md) to:
+Open phpMyAdmin or MySQL Workbench.
 
-- Create the `POS` database
-- Import table structure (`init.sql`)
-- Add test data (`seed.sql`)
-- Get default login credentials
+Create a database called POS.
+
+Import init.sql to create tables.
+
+Import seed.sql to add sample data.
+
+Default users:
 
 
-## 🧰 Technologies Used
+Role	Username	Password
+Admin	admin01	admin123
+Cashier	cashier01	cash123
+Waiter	waiter01	wait123
+## 💻 How to Clone and Import Project in Eclipse
+✅ Step 1: Clone the GitHub Repo
 
-- Java 8+
-- Maven
-- Servlets & JSP
-- MySQL
-- Apache Tomcat 8.5+
-- Git/GitHub for collaboration
-- (Optional: Bootstrap for frontend styling)
-
----
-
-## ⚙️ How to Run (Local Setup)
-
-### 1. Clone the repo
-
-```bash
+cd %USERPROFILE%\eclipse-workspace
 git clone https://github.com/catalansubanta/JavaPOS.git
-cd JavaPOS
-```
+🔐 If it asks for GitHub login, use your username and personal access token (PAT) instead of your password.
 
-### 2. Import into Eclipse
+## ✅ Step 2: Import into Eclipse
+Open Eclipse.
 
-- Open **Eclipse**
-- Go to **File > Import > Maven > Existing Maven Project**
-- Select the root project directory
-- Finish and let Maven build
+Go to File > Import.
 
-### 3. Update Maven Dependencies
+Select Maven > Existing Maven Projects → click Next.
 
-- Right-click the project → Maven → Update Project (Alt + F5)
-- Check "Force update of snapshots/releases"
+Click Browse and select the JavaPOS folder.
 
-### 4. Run on Tomcat Server
+Make sure pom.xml is detected → click Finish.
 
-- Open **Servers** view
-- Right-click → New → Server → Apache Tomcat 8.5+
-- Add the project to server
-- Start the server
+## ✅ Step 3: Update Maven Dependencies
+Right-click the project.
 
-### 5. Set up MySQL Database
+Go to Maven > Update Project (Alt + F5).
 
-- Ensure MySQL is running (XAMPP or similar)
-- Import provided `init.sql` and `seed.sql`
-- Update DB credentials in `DatabaseConnection.java`
+Check "Force Update of Snapshots/Releases" → click OK.
 
-### 6. Visit the App
+## ✅ Step 4: Set Up Tomcat Server (if not already set)
+Go to Window > Show View > Servers.
 
-```bash
+In the Servers tab → right-click → New > Server.
+
+Select Apache > Tomcat 8.5 and set the Tomcat installation folder.
+
+Click Finish.
+
+## ✅ Step 5: Add Project to Tomcat Server
+In the Servers tab, right-click your server → Add and Remove.
+
+Move your JavaPOS project from left to right.
+
+Click Finish → Start the server.
+
+## ✅ Step 6: Add Server Runtime to Build Path (Important for fixing servlet errors)
+Right-click your project → Properties.
+
+Go to Java Build Path > Libraries tab.
+
+Click Add Library > Server Runtime > Next.
+
+Select your Tomcat server → Finish → Apply and Close.
+
+## 🌐 Run the App
+Once the server is running:
+
+
 http://localhost:8080/JavaPOS
-```
+### 👥 Team Members
+Subanta Poudel
 
----
+Shree Ram Shrestha
 
-## 👥 Team Members
+Parshant GC
 
-- Subanta Poudel  
-- Shree Ram Shrestha  
-- Parshant GC  
-- Saksham Thakuri  
-- Ritik Kunwar
+Saksham Thakuri
 
----
+Ritik Kunwar
 
-## 👥 Collaborator Access
+## 🔁 Git Workflow – Pull / Push
+# ✅ To Pull or Clone the Repo
 
-To allow team members to contribute and push code:
-
-1. Go to your repo on GitHub: `https://github.com/catalansubanta/JavaPOS`
-2. Click the **Settings** tab → **Collaborators & teams**
-3. Click **"Invite a collaborator"**
-4. Type their GitHub username and click **Add**
-5. They’ll receive an invite to accept
-
-Once accepted, teammates can clone, create branches, push changes:
-
-```bash
+cd %USERPROFILE%\eclipse-workspace
 git clone https://github.com/catalansubanta/JavaPOS.git
-cd JavaPOS
+Then go to Eclipse and:
 
-# Create a new branch
-git checkout -b feature/dashboard
+File > Import > Maven > Existing Maven Projects
+## ✅ To Push Changes to GitHub
+# Create a new branch before working:
 
-# Make changes
-# Then push
+
+git checkout -b feature/your-feature-name
+# Add and commit your changes:
 
 git add .
-git commit -m "Working on dashboard"
-git push origin feature/dashboard
-```
+git commit -m "Add feature: dashboard layout"
+# Push to GitHub:
 
-✅ Make sure they’re added with **write access**, not just read.
+git push origin feature/your-feature-name
+## 🔐 Collaborator Access
+To give teammates access:
 
----
+Go to your repo on GitHub.
 
-## 📌 Notes
+Click Settings > Collaborators.
 
-- Ensure Dynamic Web Module 3.1 and Java 8+ are enabled under Project Facets
-- Server runtime libraries must be added via Project → Properties → Java Build Path
-- If `target/`, `.classpath`, or `.settings/` folders are committed, add `.gitignore`
+Add their GitHub username and click Invite.
 
-```
+## 🧠 Tips
+Always use git pull to sync before pushing.
+
+Avoid pushing directly to main.
+
+Use .gitignore to avoid unnecessary files:
+
+bash
+Copy
+Edit
 /target/
 .classpath
 .project
 .settings/
-```
-
----
-
-## 💬 Troubleshooting
-
-### 404 Not Found
-- Check servlet mapping (in `web.xml` or `@WebServlet`) matches the URL you're using
-
-### Class Not Found
-- Ensure Maven dependencies are installed
-- Check Tomcat runtime is added
-
-### Login not working?
-- Make sure DB has test users (admin, cashier, waiter)
-- Use the right username/password
-
-
-
-
-
-###
-
-#to clone the Repository
-git clone https://github.com/catalansubanta/JavaPOS.git
-cd JavaPOS
-
-# Then create a new branch before working on a feature
-git checkout - b feature/your-feature-name
-(git checkout -b feature/dashboard)
-
-# To add and commit 
-git add .
-git commit -m "Add feature: dashboard layout"
-
-# Push to github
-git push origin feature/dashboard
-
-
-
-###### Do not push to main unless you're sure!
-## always pull the latest changes before working
-git pull origin main
