@@ -1,4 +1,4 @@
-#### JavaPOS – Web-based Point of Sale System 💻🧾
+# JavaPOS – Web-based Point of Sale System 💻🧾
 A modern, lightweight web-based POS (Point of Sale) system built using Java Servlets, JSP, and MySQL. It supports multi-role users: Admin, Cashier, and Waiter — perfect for restaurants or cafes.
 
 ## 🚀 Features
@@ -19,30 +19,43 @@ A modern, lightweight web-based POS (Point of Sale) system built using Java Serv
 JavaPOS/
 ├── src/
 │   └── main/
-│       ├── java/com/javapos/...     # Java code
+│       ├── java/com/javapos/...     # Java servlets & classes
+│           ├── controller/ login, logut, etc.
+│           ├── dao/ UserDAO, ProductDAO
+│           ├── model/ User.java. Product.java
+│           ├── database/ DatabaseConnection.java
+│           ├── filter/ AuthenticationFilter.java
+│           └── utility/ Encryption
 │       ├── resources/               # Config files (if any)
 │       └── webapp/                  # JSP, CSS, WEB-INF
-│           ├── login.jsp
-│           ├── dashboard.jsp
-│           ├── css/
+│           ├── js/ js for alerts
+│           └── pages/              # all .jsp files
+│               ├── auth/
+│                   ├── login.jsp,
+│                   └── register.jsp,
+│               ├── dashboard.jsp
+│                   └── admindashboard.jsp,
+│               ├── Orders/
+│               ├── Menu/
+│               └── Common/             #header, footer
+│           └── css/                    # css files for all pages
 │           └── WEB-INF/web.xml
 ├── db/
 │   ├── init.sql                     # Table structure
-│   └── seed.sql                     # Sample data
+│   ├── seed.sql                     # Sample data
+│   └── README.md                    # 
 ├── pom.xml                          # Maven build file
 └── README.md                        # This file
+
 ## 🗃️ Database Setup
 The database files are in the /db folder.
 
 To set up:
 
-Open phpMyAdmin or MySQL Workbench.
-
-Create a database called POS.
-
-Import init.sql to create tables.
-
-Import seed.sql to add sample data.
+1. Open phpMyAdmin or MySQL Workbench.
+2. Create a database called POS.
+3. Import init.sql to create tables.
+4. Import seed.sql to add sample data.
 
 Default users:
 
@@ -51,61 +64,77 @@ Role	Username	Password
 Admin	admin01	admin123
 Cashier	cashier01	cash123
 Waiter	waiter01	wait123
-## 💻 How to Clone and Import Project in Eclipse
-✅ Step 1: Clone the GitHub Repo
 
-cd %USERPROFILE%\eclipse-workspace
+
+## 💻 Setup in Eclipse
+
+# ✅ Step 1: Clone the GitHub Repository
+```bash 
+# Windows (PowerShell or CMD)
+cd %USERPROFILE%\eclipse‑workspace
+
+# macOS/Linux
+cd ~/eclipse‑workspace
+
 git clone https://github.com/catalansubanta/JavaPOS.git
+cd JavaPOS
+```
 🔐 If it asks for GitHub login, use your username and personal access token (PAT) instead of your password.
 
-## ✅ Step 2: Import into Eclipse
-Open Eclipse.
+# ✅ Step 2: Import into Eclipse
+File → Import…
 
-Go to File > Import.
+Maven → Existing Maven Projects → Next
 
-Select Maven > Existing Maven Projects → click Next.
+Browse to your cloned JavaPOS folder
 
-Click Browse and select the JavaPOS folder.
+Ensure pom.xml is detected → Finish
 
-Make sure pom.xml is detected → click Finish.
+# ✅ Step 3: Update Maven Dependencies
+Right‑click project → Maven → Update Project… (Alt + F5)
 
-## ✅ Step 3: Update Maven Dependencies
-Right-click the project.
+Check Force Update of Snapshots/Releases → OK
 
-Go to Maven > Update Project (Alt + F5).
+# ✅ Step 4: Configure Project Facets
+Right‑click project → Properties → Project Facets
 
-Check "Force Update of Snapshots/Releases" → click OK.
+Enable Dynamic Web Module → set version 3.1
 
-## ✅ Step 4: Set Up Tomcat Server (if not already set)
-Go to Window > Show View > Servers.
+Enable Java → set version 1.8 or 11 (must match Tomcat)
 
-In the Servers tab → right-click → New > Server.
+Apply and Close
 
-Select Apache > Tomcat 8.5 and set the Tomcat installation folder.
+If you bump to Dynamic Web Module 4.0+, you’ll need Tomcat 9+.
 
-Click Finish.
+# ✅ Step 5: Set Up Tomcat Server
+Window → Show View → Servers
 
-## ✅ Step 5: Add Project to Tomcat Server
-In the Servers tab, right-click your server → Add and Remove.
+In Servers view → right‑click → New → Server
 
-Move your JavaPOS project from left to right.
+Choose Apache → Tomcat v8.5 Server, point to your install folder → Finish
 
-Click Finish → Start the server.
+# ✅ Step 6: Deploy Project to Tomcat
+In Servers view → right‑click your Tomcat → Add and Remove…
 
-## ✅ Step 6: Add Server Runtime to Build Path (Important for fixing servlet errors)
-Right-click your project → Properties.
+Move JavaPOS from Available → Configured
 
-Go to Java Build Path > Libraries tab.
+Click Finish, then Start the server
 
-Click Add Library > Server Runtime > Next.
+# ✅ Step 7: Add Server Runtime to Build Path
+Right‑click project → Properties → Java Build Path → Libraries
 
-Select your Tomcat server → Finish → Apply and Close.
+Click Add Library… → Server Runtime → Next
+
+Select your Tomcat v8.5 → Finish → Apply and Close
+
 
 ## 🌐 Run the App
 Once the server is running:
 
 
 http://localhost:8080/JavaPOS
+
+
 ### 👥 Team Members
 Subanta Poudel
 
@@ -117,46 +146,118 @@ Saksham Thakuri
 
 Ritik Kunwar
 
-## 🔁 Git Workflow – Pull / Push
-# ✅ To Pull or Clone the Repo
+## 🔁 Git Workflow – Pull
 
-cd %USERPROFILE%\eclipse-workspace
-git clone https://github.com/catalansubanta/JavaPOS.git
-Then go to Eclipse and:
+# 1. Pull the latest changes
 
-File > Import > Maven > Existing Maven Projects
-## ✅ To Push Changes to GitHub
-# Create a new branch before working:
+```bash
+git pull origin main
+```
 
+# 2. Create a feature branch
 
-git checkout -b feature/your-feature-name
-# Add and commit your changes:
+```bash
+git checkout -b feature/your-feature
+```
+# 3. Stage & commit
 
+```bash
 git add .
-git commit -m "Add feature: dashboard layout"
-# Push to GitHub:
+git commit -m "Add: description of your change"
+```
 
-git push origin feature/your-feature-name
-## 🔐 Collaborator Access
-To give teammates access:
+# 4. Push to remote
 
-Go to your repo on GitHub.
+```bash
+git push -u origin feature/your-feature
+```
 
-Click Settings > Collaborators.
 
-Add their GitHub username and click Invite.
+## 🔄 Getting the Latest Updates
 
-## 🧠 Tips
-Always use git pull to sync before pushing.
+# ✅ From GitHub to Your Local PC
 
-Avoid pushing directly to main.
+``` bash
+cd path/to/your/JavaPOS
+git branch              # see current branch
+git checkout main       # switch if needed
+git pull origin main    # fetch & merge latest
+```
 
-Use .gitignore to avoid unnecessary files:
+# 🔁 If You’re on a Feature Branch
 
-bash
-Copy
-Edit
-/target/
-.classpath
-.project
-.settings/
+```bash
+git checkout feature/your-feature
+git pull origin main    # merge updates from main
+```
+
+# 💡 Quick Reference
+
+Task	                            Command
+Clone the project first time	    git clone <url>
+Update current branch with remote	git pull origin <branch>
+Switch to another branch	        git checkout <branch>
+Merge main into your branch	        git pull origin main
+
+
+## Push changes to GitHub
+
+# 1. In Terminal or Git Bash
+```bash
+cd path/to/JavaPOS
+```
+
+# 2. Check status
+```bash
+git status
+```
+
+# 3. Add changes
+```bash
+git add . 
+```
+ or add specific files (examples)
+```bash
+git add src/main/java/com/javapos/controller/RegisterController.java
+```
+may be something like this
+
+# 4. Commit changes
+```bash
+git commit -m "Add register functionality with validation and filter integration"
+```
+
+# 5. Push to current branch
+ex
+```bash
+git push origin feature/register
+```
+    or on main
+```bash
+git push origin main
+```
+
+# # # to Push to, need to have created a feature branch
+
+## 🛠 Troubleshooting
+# Missing servlet classes?
+Ensure Tomcat runtime is on your Build Path (see Step 7) and your servlet dependency scope is provided.
+
+# 404 Not Found
+Verify web.xml URL‑patterns or your @WebServlet annotations.
+
+# Tomcat won’t start
+Check for port conflicts in server.xml and review the Eclipse console logs.
+
+# Facet errors
+Revisit Project Facets to confirm Dynamic Web Module and Java versions.
+
+
+## 🤝 Contributing
+1. Fork this repository
+
+2. Create a feature branch
+
+3. Commit your changes
+
+4. Open a Pull Request

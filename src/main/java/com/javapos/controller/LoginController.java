@@ -1,6 +1,7 @@
 package com.javapos.controller;
 
 import com.javapos.dao.UserDAO;
+import com.javapos.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,30 +10,47 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 
-        UserDAO dao = new UserDAO();
-        boolean loginSuccess = dao.checkLogin(username, password);
+		UserDAO dao = new UserDAO();
+		User user = null;
 
-        if (loginSuccess) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            response.sendRedirect("dashboard.jsp");
-        } else {
-            request.setAttribute("errorMessage", "Invalid username or password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-    }
+		try {
+			if (dao.checkLogin(username, password)) {
+				user = dao.getUser(username);
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
-    }
+				//Create Session
+				HttpSession session = request.getSession();
+				session.setAttribute("userWithSession", user);
+				session.setMaxInactiveInterval(30 * 60); // Optional: 30 minutes timeout
+
+				//Redirect to role-based dashboard
+				switch (user.getRole()) {
+					case "admin":
+						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+						break;
+					case "cashier":
+						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+						break;
+					case "waiter":
+						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+						break;
+				}
+			} else {
+				request.setAttribute("errorMessage", "Invalid username or password");
+				request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "Login failed due to an internal error.");
+			request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+		}
+	}
 }
