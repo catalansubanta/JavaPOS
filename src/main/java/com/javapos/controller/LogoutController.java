@@ -7,17 +7,19 @@ import java.io.IOException;
 
 @WebServlet("/logout")
 public class LogoutController extends HttpServlet {
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // ✅ Invalidate session
+        // Invalidate the session
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
 
-        // ✅ Redirect to login page
-        response.sendRedirect("login.jsp");
+        // Redirect back to login page
+        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
     }
 }
