@@ -1,7 +1,5 @@
 
 
-START TRANSACTION;
-
 -- Insert Users
 INSERT INTO `Users` (`User_ID`, `Role`, `Username`, `Password`, `Full_Name`, `Email`, `Phone`) VALUES
 (1, 'admin', 'admin01', 'admin123', 'Admin User', 'admin@pos.com', '9800000000'),
