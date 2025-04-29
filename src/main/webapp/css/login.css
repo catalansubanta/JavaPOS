@@ -1,49 +1,92 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e8f4fd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
+/* Container */
 .login-container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
 }
 
+/* Login Box */
 .login-box {
-  background-color: #fff;
-  padding: 25px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.login-box input,
-.login-box button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.login-box h2 {
+    text-align: center;
+    color: #4996D1;
+    margin-bottom: 20px;
+}
+
+.login-box label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .login-box button {
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border: none;
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    font-size: 16px;
+    background-color: #4996D1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .login-box button:hover {
-  background-color: #0056b3;
+    background-color: #357cb5;
 }
 
-.login-box .error {
-  color: red;
-  margin-top: 10px;
+.login-box p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-box a {
+    color: #4996D1;
+    text-decoration: none;
+}
+
+.login-box a:hover {
+    text-decoration: underline;
+}
+
+/* Error */
+.error {
+    color: #ff1313;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
 }

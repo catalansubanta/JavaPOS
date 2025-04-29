@@ -1,31 +1,52 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.javapos.model.User" %>
-
 <%
     User user = (User) session.getAttribute("userWithSession");
     if (user == null) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;
     }
+
+    // Determine dashboard URL based on user role
+    String dashboardUrl = request.getContextPath() + "/Pages/Dashboard/dashboard.jsp";
+    switch (user.getRole()) {
+        case "admin":
+            dashboardUrl = request.getContextPath() + "/Pages/Dashboard/admin-dashboard.jsp";
+            break;
+        case "cashier":
+            dashboardUrl = request.getContextPath() + "/Pages/Dashboard/cashier-dashboard.jsp";
+            break;
+        case "waiter":
+            dashboardUrl = request.getContextPath() + "/Pages/Dashboard/waiter-dashboard.jsp";
+            break;
+    }
+
+    // Safe fallback for currentPage
+    String currentPage = (String) request.getAttribute("currentPage");
+    if (currentPage == null) currentPage = "";
 %>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>JavaPOS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">JavaPOS</a>
-    <div class="d-flex">
-      <span class="navbar-text me-3 text-light">
-        Hello, <b><%= user.getFullName() %></b> (<%= user.getRole() %>)
-      </span>
-      <a class="btn btn-outline-light" href="<%= request.getContextPath() %>/logout">Logout</a>
-    </div>
-  </div>
-</nav>
-<div class="container mt-4">
+<!-- Header Bar -->
+<div class="header-bar">
+    <header>
+        <h1>Point of Sale</h1>
+        <h2>GrandLine</h2>
+    </header>
+</div>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <nav>
+        <ul>
+            <li><a href="<%= request.getContextPath() %>/Pages/HomePage.jsp"
+                   class="<%= "HomePage".equals(currentPage) ? "active" : "" %>">Home</a></li>
+
+            <li><a href="<%= dashboardUrl %>"
+                   class="<%= "Dashboard".equals(currentPage) ? "active" : "" %>">Dashboard</a></li>
+
+            <li><a href="<%= request.getContextPath() %>/Pages/Profile/user-profile.jsp"
+                   class="<%= "Profile".equals(currentPage) ? "active" : "" %>">View Profile</a></li>
+
+            <li><a href="<%= request.getContextPath() %>/logout">Logout</a></li>
+        </ul>
+    </nav>
+</div>

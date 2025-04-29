@@ -79,6 +79,19 @@ public class UserDAO {
             return false;
         }
     }
+    
+    public boolean updateUserProfile(User user) throws SQLException, ClassNotFoundException {
+        Connection conn = DatabaseConnection.getConnection();
+        String sql = "UPDATE Users SET Email = ?, Phone = ? WHERE User_ID = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, user.getEmail());
+        stmt.setString(2, user.getPhone());
+        stmt.setInt(3, user.getUserId());
+
+        int rows = stmt.executeUpdate();
+        return rows > 0;
+    }
+
 
     public User getUser(String username) {
         try (Connection conn = DatabaseConnection.getConnection()) {

@@ -1,18 +1,22 @@
 
 
-START TRANSACTION;
-
 -- Insert Users
 INSERT INTO `Users` (`User_ID`, `Role`, `Username`, `Password`, `Full_Name`, `Email`, `Phone`) VALUES
-(1, 'admin', 'admin01', 'admin123', 'Admin User', 'admin@pos.com', '9800000000'),
-(2, 'cashier', 'cashier01', 'cash123', 'Cashier Some', 'cashier@pos.com', '9800000001'),
-(3, 'waiter', 'waiter01', 'wait123', 'Waiter Guy', 'waiter@pos.com', '9800000002');
+(1, 'admin', 'admin01', 'admin123', 'Main Admin', 'admin@pos.com', '9800000000'),
+(2, 'cashier', 'cashier01', 'cash123', 'First Cashier', 'cashier@pos.com', '9800000001'),
+(3, 'waiter', 'waiter01', 'wait123', 'Waiter Guy', 'waiter@pos.com', '98000543202'),
+(4, 'admin', 'Catalan', '1234', 'Catalan House', 'Catalan@pos.com', '9800123002'),
+(5, 'waiter', 'waiter2', 'wait123', 'saviant foremen', 'saviant@pos.com', '9800000002'),
+(6, 'cashier', 'house1', 'house12', 'dr house', 'housemd@pos.com', '9800003302');
 
 -- Insert Table Numbers
 INSERT INTO `Table_No` (`Table_ID`, `Table_Number`, `Status`) VALUES
 (1, 1, 'available'),
-(2, 2, 'occupied'),
-(3, 3, 'reserved');
+(2, 2, 'available'),
+(3, 3, 'available'),
+(4, 4, 'available'),
+(5, 5, 'occupied'),
+(6, 6, 'reserved');
 
 -- Insert Items (Menu)
 INSERT INTO `Items` (`Item_ID`, `Item_Name`, `Description`, `Price`, `Category`, `Stock`, `Unit`) VALUES
