@@ -1,7 +1,6 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+05:45";
 
 -- USERS
 CREATE TABLE `Users` (
@@ -21,7 +20,7 @@ CREATE TABLE `Users` (
 CREATE TABLE `Table_No` (
   `Table_ID` INT NOT NULL AUTO_INCREMENT,
   `Table_Number` INT NOT NULL,
-  `Status` ENUM('available','occupied','reserved') DEFAULT 'available',
+  `Table_Status` ENUM('available','occupied','reserved') DEFAULT 'available',
   PRIMARY KEY (`Table_ID`),
   UNIQUE KEY `Table_Number` (`Table_Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -87,7 +86,7 @@ CREATE TABLE `Payment` (
   `Order_ID` INT DEFAULT NULL,
   `Paid_Amount` DECIMAL(8,2) DEFAULT NULL,
   `Payment_Time` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `Status` ENUM('paid','unpaid','refunded') DEFAULT 'paid',
+  `Payment_Status` ENUM('paid','unpaid','refunded') DEFAULT 'paid',
   PRIMARY KEY (`Payment_ID`),
   KEY `Order_ID` (`Order_ID`),
   FOREIGN KEY (`Order_ID`) REFERENCES `Orders` (`Order_ID`)

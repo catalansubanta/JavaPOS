@@ -20,21 +20,21 @@ public class LoginController extends HttpServlet {
 		String password = request.getParameter("password");
 
 		UserDAO dao = new UserDAO();
-		User user = null;
 
 		try {
 			if (dao.checkLogin(username, password)) {
-				user = dao.getUser(username);
+				//Fetch full user info
+				User user = dao.getUser(username);
 
-				//Create Session
+				//Create session and store user
 				HttpSession session = request.getSession();
 				session.setAttribute("userWithSession", user);
-				session.setMaxInactiveInterval(30 * 60); // Optional: 30 minutes timeout
+				session.setMaxInactiveInterval(30 * 60); // 30 min timeout
 
 				//Redirect to role-based dashboard
 				switch (user.getRole()) {
 					case "admin":
-						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+						response.sendRedirect(request.getContextPath() + "/Pages/HomePage.jsp");
 						break;
 					case "cashier":
 						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
@@ -42,8 +42,13 @@ public class LoginController extends HttpServlet {
 					case "waiter":
 						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
 						break;
+					default:
+						response.sendRedirect(request.getContextPath() + "/Pages/HomePage.jsp");
+						break;
 				}
+
 			} else {
+				//Invalid credentials
 				request.setAttribute("errorMessage", "Invalid username or password");
 				request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
 			}

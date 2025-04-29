@@ -1,0 +1,180 @@
+/* ===== General Reset & Layout ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F0F8FF; /* Light sky blue */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    padding: 30px 20px;
+    flex: 1;
+    text-align: center;
+}
+
+/* ===== Header ===== */
+.header-bar {
+    background-color: #4996D1; /* Primary */
+    color: white;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.header-bar h1 {
+    margin-bottom: 0.2rem;
+    font-size: 28px;
+}
+
+.header-bar h2 {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+/* ===== Navigation Bar ===== */
+.nav-bar {
+    background-color: #4996D1; /* Primary */
+}
+
+.nav-bar ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+.nav-bar li {
+    margin: 0;
+}
+
+.nav-bar li a {
+    display: block;
+    padding: 1rem 2rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav-bar li a:hover {
+    background-color: #FFE87C; /* Hover - light yellow */
+    color: #333;
+}
+
+.nav-bar li a.active {
+    background-color: #556B7C; /* Active - deep ocean blue */
+    font-weight: bold;
+    color: white;
+}
+
+/* ===== Buttons ===== */
+button, .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4996D1; /* Primary */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+button:hover, .btn:hover {
+    background-color: #FFE87C; /* Hover */
+    color: #333;
+}
+
+/* ===== Footer ===== */
+footer {
+    background-color: #4996D1; /* Primary */
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+.dashboard-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.dashboard-subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.dashboard-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.dashboard-btn {
+    padding: 12px 24px;
+    background-color: #4996D1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-btn:hover {
+    background-color: #367cb3;
+}
+
+.menu-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.menu-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.menu-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    width: 260px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.menu-card h3 {
+    color: #4996D1;
+    margin-bottom: 8px;
+}
