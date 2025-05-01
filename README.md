@@ -47,15 +47,27 @@ JavaPOS/
 ├── pom.xml                          # Maven build file
 └── README.md                        # This file
 
+
+##nTECHNOLOGIES Used
+
+- Java 
+- Maven
+- Servlet & JSP
+- MySQL
+- Apache Tomcat 8.5
+- git/github for collobaration
+- 
+
 ## 🗃️ Database Setup
-The database files are in the /db folder.
+
+The database files are in the [`/db`](./db) folder.
+please follow the guide in [`db/README.md`] (./db/README.md) to:
 
 To set up:
-
 1. Open phpMyAdmin or MySQL Workbench.
-2. Create a database called POS.
-3. Import init.sql to create tables.
-4. Import seed.sql to add sample data.
+2. Create a database called `POS`.
+3. Import `init.sql` to create tables.
+4. Import `seed.sql` to add sample data.
 
 Default users:
 
@@ -83,48 +95,34 @@ cd JavaPOS
 
 # ✅ Step 2: Import into Eclipse
 File → Import…
-
 Maven → Existing Maven Projects → Next
-
 Browse to your cloned JavaPOS folder
-
 Ensure pom.xml is detected → Finish
 
 # ✅ Step 3: Update Maven Dependencies
 Right‑click project → Maven → Update Project… (Alt + F5)
-
 Check Force Update of Snapshots/Releases → OK
 
 # ✅ Step 4: Configure Project Facets
 Right‑click project → Properties → Project Facets
-
 Enable Dynamic Web Module → set version 3.1
-
 Enable Java → set version 1.8 or 11 (must match Tomcat)
-
 Apply and Close
-
 If you bump to Dynamic Web Module 4.0+, you’ll need Tomcat 9+.
 
 # ✅ Step 5: Set Up Tomcat Server
 Window → Show View → Servers
-
 In Servers view → right‑click → New → Server
-
 Choose Apache → Tomcat v8.5 Server, point to your install folder → Finish
 
 # ✅ Step 6: Deploy Project to Tomcat
 In Servers view → right‑click your Tomcat → Add and Remove…
-
 Move JavaPOS from Available → Configured
-
 Click Finish, then Start the server
 
 # ✅ Step 7: Add Server Runtime to Build Path
 Right‑click project → Properties → Java Build Path → Libraries
-
 Click Add Library… → Server Runtime → Next
-
 Select your Tomcat v8.5 → Finish → Apply and Close
 
 
@@ -146,6 +144,9 @@ Saksham Thakuri
 
 Ritik Kunwar
 
+
+##
+
 ## 🔁 Git Workflow – Pull
 
 # 1. Pull the latest changes
@@ -159,7 +160,7 @@ git pull origin main
 ```bash
 git checkout -b feature/your-feature
 ```
-# 3. Stage & commit
+# 3. To add & commit
 
 ```bash
 git add .
@@ -170,6 +171,28 @@ git commit -m "Add: description of your change"
 
 ```bash
 git push -u origin feature/your-feature
+```
+or 
+```bash
+git push origin feature/featurename
+```
+
+
+
+## Tips & Note: 
+```
+    Always use git pull to sync before pushing.
+    Do not push to main unless you are sure!
+    Use .gitignore to avoid unnecessary files: 
+    
+    git pull origin main
+
+    ignore:
+    
+    /target/
+    .classpath
+    .project
+    .settings/
 ```
 
 
@@ -255,9 +278,60 @@ Revisit Project Facets to confirm Dynamic Web Module and Java versions.
 
 ## 🤝 Contributing
 1. Fork this repository
-
 2. Create a feature branch
-
 3. Commit your changes
-
 4. Open a Pull Request
+
+## Step-byStep guid for Git push if the push is not working
+
+you need to be in the correct directory for this to work
+always run command inside JavaPOS only
+
+```bash
+cd/path/JavaPOS
+
+cd /Users/subantacatalan/eclipse-workspave/JavaPOS
+```
+# 1. Git Project
+in the Eclipse terminal inside the project folder
+```bash
+    ls -a
+```
+to check if it's already a Git project
+```bash 
+    git init
+```
+to initialize Git inside the project
+
+# 2. Connect to gitHub Repo
+connecting local project to the GitHub repo
+```bash
+    git remore add origin https://github.com/catalansubanta/JavaPOS.git
+```
+
+# 3. Check branck
+```bash
+git branch
+```
+
+# 4. create new branch
+```bash
+git checkout -b feature/theNameofTheBranch
+```
+
+# 5. Stage all the files
+```bash
+git add .
+```
+
+# 6. Commit changes
+```bash
+git commit -m "whatever you changed or added"
+```
+
+# 7. Push
+```bash
+git push -u origin feature/feature-name
+```
+
+
