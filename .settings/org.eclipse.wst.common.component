@@ -14,6 +14,7 @@
                         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+
                         
         
         <property name="context-root" value="JavaPOS"/>
