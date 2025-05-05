@@ -18,14 +18,7 @@ INSERT INTO items (Item_Name, Description, Price, Category, Stock, Unit) VALUES
 ('Classic Vanilla Milkshake', 'Smooth, creamy, and timeless classic', 250.00, 'drink', 15, 'ml'),
 ('Oreo Crush Milkshake', 'Cruncy Oreo blended into a creamy shake', 400.00, 'drink', 15, 'ml');
 
--- Insert tables
-INSERT INTO table_no (Table_Number, Table_Status) VALUES
-(1, 'available'),
-(2, 'available'),
-(3, 'available'),
-(4, 'available'),
-(5, 'occupied'),
-(6, 'reserved');
+
 
 -- Insert orders
 INSERT INTO orders (User_ID, Table_ID, Order_Type, Order_Time, Order_Status, Total_Price) VALUES
@@ -40,33 +33,4 @@ INSERT INTO orders (User_ID, Table_ID, Order_Type, Order_Time, Order_Status, Tot
 (3, NULL, 'takeaway', '2025-04-30 05:30:00', 'completed', 1100.00),
 (5, NULL, 'takeaway', '2025-05-02 04:15:00', 'completed', 900.00);
 
--- Insert order items
-INSERT INTO orderitems (Order_ID, Item_ID, Quantity, Price, Subtotal) VALUES
-(1, 1, 2, 350.00, 700.00),
-(5, 3, 1, 250.00, 250.00),
-(6, 2, 2, 500.00, 1000.00),
-(7, 4, 1, 400.00, 400.00),
-(8, 5, 2, 200.00, 400.00),
-(9, 6, 3, 300.00, 900.00),
-(10, 7, 1, 250.00, 250.00),
-(1, 8, 2, 400.00, 800.00),
-(2, 1, 1, 350.00, 350.00),
-(3, 2, 2, 500.00, 1000.00),
-(4, 3, 1, 250.00, 250.00),
-(5, 4, 2, 400.00, 800.00);
 
--- Insert cart items
-INSERT INTO cart (User_ID, Item_ID, Quantity, Created_At) VALUES
-(3, 3, 1, '2025-04-13 17:47:32'),
-(3, 4, 2, '2025-04-13 11:57:31'),
-(3, 5, 1, '2025-04-13 01:17:12'),
-(5, 4, 2, '2025-05-03 11:23:55'),
-(5, 5, 1, '2025-05-03 11:23:55'),
-(5, 6, 2, '2025-05-03 10:21:35'),
-(5, 7, 1, '2025-05-03 11:23:55');
-
--- Insert payment
-INSERT INTO payment (Order_ID, Paid_Amount, Payment_Time, Payment_Status) VALUES
-(1, 1200, '2025-04-13 17:47:32', 'paid'),
-(2, 1500, '2025-04-14 13:47:32', 'paid'),
-(3, 1700, '2025-04-15 12:47:32', 'paid');
