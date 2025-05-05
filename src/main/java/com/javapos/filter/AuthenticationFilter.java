@@ -1,54 +1,48 @@
 package com.javapos.filter;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.*;
 import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/Pages/*" })  // Applies to all pages inside /Pages/
+@WebFilter(urlPatterns = {
+    "/Pages/Dashboard/*",
+    "/Pages/Admin/*",
+    "/Pages/Menu/*",
+    "/Pages/Orders/*",
+    "/Pages/Payment/*",
+    "/Pages/Reports/*",
+    "/Pages/Profile/*"
+})
 public class AuthenticationFilter implements Filter {
-
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         System.out.println("AuthenticationFilter initialized");
     }
 
-    @Override
-    public void destroy() {
-        System.out.println("AuthenticationFilter destroyed");
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpSession session = httpRequest.getSession(false);
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+        boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
+        String loginURI = httpRequest.getContextPath() + "/Pages/auth/login.jsp";
+        boolean isLoginRequest = httpRequest.getRequestURI().equals(loginURI);
 
-        String uri = req.getRequestURI();
-        HttpSession session = req.getSession(false);
-        Object user = (session != null) ? session.getAttribute("userWithSession") : null;
-        boolean isLoggedIn = user != null;
-
-        // Allow unauthenticated access to auth pages
-        boolean isAuthPage = uri.contains("auth/login.jsp") || uri.contains("auth/register.jsp")
-                || uri.contains("/login") || uri.contains("/register");
-
-        if (isAuthPage) {
-            if (isLoggedIn) {
-                session.setAttribute("alreadyLoggedInMessage", "You're already logged in!");
-                res.sendRedirect(req.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
-            } else {
-                chain.doFilter(request, response); // Allow login/register access
-            }
-            return;
-        }
-
-        // For all other protected pages
-        if (isLoggedIn) {
+        if (isLoggedIn || isLoginRequest) {
             chain.doFilter(request, response);
         } else {
-            res.sendRedirect(req.getContextPath() + "/Pages/auth/login.jsp");
+            httpResponse.sendRedirect(loginURI);
         }
+    }
+
+    public void destroy() {
     }
 }

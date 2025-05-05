@@ -1,60 +1,87 @@
-<%@ page import="com.javapos.model.User" %>
-<%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Error</title>
+    <title>Error - JavaPOS</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/dashboard.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #F0F8FF; /* Alice Blue */
-            color: #721c24;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .error-box {
-            background-color: #fff;
-            border: 2px solid #ff1313;
-            padding: 30px;
-            border-radius: 8px;
-            width: 500px;
-            max-width: 90%;
+        .error-container {
+            max-width: 600px;
+            margin: 100px auto;
             text-align: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        h2 {
-            color: #ff1313;
-            margin-bottom: 10px;
+        .error-icon {
+            font-size: 64px;
+            color: #dc3545;
+            margin-bottom: 20px;
         }
 
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 16px;
-            background-color: #4996D1;
-            color: white;
-            text-decoration: none;
+        .error-message {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .error-details {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .error-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
             border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        a:hover {
-            background-color: #377bb3;
+        .btn-primary {
+            background-color: #4996d1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7ab0;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
 <body>
 
-    <div class="error-box">
-        <h2>Oops! Something went wrong.</h2>
-        <p><strong>Error Message:</strong> <%= exception != null ? exception.getMessage() : "Unknown error occurred." %></p>
-        <p>Please contact support or try again later.</p>
-        <a href="<%= request.getContextPath() %>/Pages/auth/login.jsp">Back to Login</a>
+<% request.setAttribute("currentPage", "Error"); %>
+<jsp:include page="/Pages/Common/header.jsp" />
+
+<div class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h1 class="error-message"><%= request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : "Oops! Something went wrong" %></h1>
+    <p class="error-details"><%= request.getAttribute("errorDetails") != null ? request.getAttribute("errorDetails") : "We're sorry, but there was an error processing your request." %></p>
+    
+    <div class="error-actions">
+        <a href="<%= request.getContextPath() %>/Pages/auth/login.jsp" class="btn btn-primary">Go to Login</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+    </div>
     </div>
 
+<jsp:include page="/Pages/Common/footer.jsp" />
 </body>
 </html>

@@ -1,6 +1,6 @@
 <%@ page import="com.javapos.model.User" %>
 <%
-    User user = (User) session.getAttribute("userWithSession");
+    User user = (User) session.getAttribute("user");
     if (user == null) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;
@@ -8,7 +8,7 @@
 
     // Determine dashboard URL based on user role
     String dashboardUrl = request.getContextPath() + "/Pages/Dashboard/dashboard.jsp";
-    switch (user.getRole()) {
+    switch (user.getRole().toLowerCase()) {
         case "admin":
             dashboardUrl = request.getContextPath() + "/Pages/Dashboard/admin-dashboard.jsp";
             break;
@@ -37,11 +37,16 @@
 <div class="nav-bar">
     <nav>
         <ul>
-            <li><a href="<%= request.getContextPath() %>/Pages/HomePage.jsp"
-                   class="<%= "HomePage".equals(currentPage) ? "active" : "" %>">Home</a></li>
+            <% if ("admin".equalsIgnoreCase(user.getRole())) { %>
+                <li><a href="<%= request.getContextPath() %>/Pages/Admin/home.jsp"
+                       class="<%= "Home".equals(currentPage) ? "active" : "" %>">Home</a></li>
+            <% } %>
 
             <li><a href="<%= dashboardUrl %>"
                    class="<%= "Dashboard".equals(currentPage) ? "active" : "" %>">Dashboard</a></li>
+
+            <li><a href="<%= request.getContextPath() %>/Pages/Menu/menu-list.jsp"
+                   class="<%= "Menu".equals(currentPage) ? "active" : "" %>">Menu</a></li>
 
             <li><a href="<%= request.getContextPath() %>/Pages/Profile/user-profile.jsp"
                    class="<%= "Profile".equals(currentPage) ? "active" : "" %>">View Profile</a></li>

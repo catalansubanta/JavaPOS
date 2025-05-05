@@ -10,7 +10,7 @@ INSERT INTO `Users` (`User_ID`, `Role`, `Username`, `Password`, `Full_Name`, `Em
 (6, 'cashier', 'house1', 'house12', 'dr house', 'housemd@pos.com', '9800003302');
 
 -- Insert Table Numbers
-INSERT INTO `Table_No` (`Table_ID`, `Table_Number`, `Status`) VALUES
+INSERT INTO `Table_No` (`Table_ID`, `Table_Number`, `Table_Status`) VALUES
 (1, 1, 'available'),
 (2, 2, 'available'),
 (3, 3, 'available'),
@@ -40,7 +40,7 @@ INSERT INTO `Cart` (`Cart_ID`, `User_ID`, `Item_ID`, `Quantity`, `Created_At`) V
 (2, 3, 4, 2, '2025-04-13 17:47:32');
 
 -- Insert Payment
-INSERT INTO `Payment` (`Payment_ID`, `Order_ID`, `Paid_Amount`, `Payment_Time`, `Status`) VALUES
+INSERT INTO `Payment` (`Payment_ID`, `Order_ID`, `Paid_Amount`, `Payment_Time`, `Payment_Status`) VALUES
 (1, 1, 12.00, '2025-04-13 17:47:32', 'paid');
 
 COMMIT;
