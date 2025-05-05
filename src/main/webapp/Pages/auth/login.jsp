@@ -1,43 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-    <title>Login - JavaPOS</title>
-    <link rel="stylesheet" type="text/css" href="../../css/main.css">
-    <link rel="stylesheet" type="text/css" href="../../css/login.css">
+    <title>Login - Restaurant POS</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 </head>
-<body class="login-page">
-	<div class="login-container">
-		<div class="login-box">
-            <h2>Login to JavaPOS</h2>
+<body class="auth-page">
+	<div class="auth-container">
+		<div class="auth-box">
+            <h1>Restaurant POS</h1>
+            <h2>Login</h2>
 
-            <% if (request.getAttribute("error") != null) { %>
-                <div class="error-message">
-                    <%= request.getAttribute("error") %>
-                </div>
-			<% } %>
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger">${error}</div>
+            </c:if>
 
-            <form action="<%= request.getContextPath() %>/login" method="post">
+            <form action="${pageContext.request.contextPath}/login" method="post">
                 <div class="form-group">
-				<label for="username">Username</label>
-                    <input type="text" id="username" name="username" 
-                           value="<%= request.getAttribute("username") != null ? request.getAttribute("username") : "" %>"
-                           required>
+                    <label for="loginId">Email or Username</label>
+                    <input type="text" id="loginId" name="loginId" required 
+                           placeholder="Enter your email or username">
                 </div>
 
                 <div class="form-group">
-				<label for="password">Password</label>
-				<input type="password" id="password" name="password" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Enter your password">
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="login-btn">Login</button>
-                </div>
-			</form>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
 
-            <div class="register-link">
-                Don't have an account? <a href="register.jsp">Register here</a>
+            <div class="auth-links">
+                <a href="${pageContext.request.contextPath}/register">Register</a>
             </div>
 		</div>
 	</div>

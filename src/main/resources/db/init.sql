@@ -75,4 +75,4 @@ CREATE TABLE IF NOT EXISTS payment (
     Payment_Time DATETIME DEFAULT CURRENT_TIMESTAMP,
     Payment_Status ENUM('paid', 'unpaid', 'refunded') DEFAULT 'paid',
     FOREIGN KEY (Order_ID) REFERENCES orders(Order_ID)
-);
+); 

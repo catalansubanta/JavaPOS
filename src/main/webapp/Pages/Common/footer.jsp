@@ -2,8 +2,8 @@
 
     </div> <!-- Close container from header -->
 
-    <footer class="text-center text-muted mt-5 py-3 border-top">
-        &copy; <%= java.time.Year.now() %> JavaPOS. All rights reserved.
+    <footer class="footer">
+        <p>&copy; 2024 Restaurant POS System. All rights reserved.</p>
     </footer>
 
     <script src="<%= request.getContextPath() %>/js/main.js"></script>

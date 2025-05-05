@@ -67,6 +67,4 @@ INSERT INTO cart (User_ID, Item_ID, Quantity, Created_At) VALUES
 
 -- Insert payment
 INSERT INTO payment (Order_ID, Paid_Amount, Payment_Time, Payment_Status) VALUES
-(1, 1200, '2025-04-13 17:47:32', 'paid'),
-(2, 1500, '2025-04-14 13:47:32', 'paid'),
-(3, 1700, '2025-04-15 12:47:32', 'paid');
+(1, 12.00, '2025-04-13 17:47:32', 'paid'); 
