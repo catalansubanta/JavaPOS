@@ -1,60 +1,58 @@
 package com.javapos.controller;
 
-import com.javapos.dao.UserDAO;
-import com.javapos.model.User;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.IOException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import com.javapos.dao.UserDAO;
+import com.javapos.model.User;
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private UserDAO userDAO;
+
+    public void init() {
+        userDAO = new UserDAO();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
-        String fullName = request.getParameter("fullname");
-        String email = request.getParameter("email");
         String username = request.getParameter("username");
-        String phone = request.getParameter("phone");
         String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String role = request.getParameter("role");
 
-        if (!password.equals(confirmPassword)) {
-            request.setAttribute("errorMessage", "Passwords do not match!");
-            request.getRequestDispatcher("/Pages/auth/register.jsp").forward(request, response);
+        // Validate input
+        if (userDAO.isUsernameExists(username)) {
+            request.setAttribute("error", "Username already exists");
+            request.getRequestDispatcher("Pages/register.jsp").forward(request, response);
             return;
         }
 
-        UserDAO dao = new UserDAO();
-
-        if (dao.isUsernameExists(username)) {
-            request.setAttribute("errorMessage", "Username already exists!");
-            request.getRequestDispatcher("/Pages/auth/register.jsp").forward(request, response);
+        if (userDAO.isEmailExists(email)) {
+            request.setAttribute("error", "Email already exists");
+            request.getRequestDispatcher("Pages/register.jsp").forward(request, response);
             return;
         }
 
-        if (dao.isEmailExists(email)) {
-            request.setAttribute("errorMessage", "Email already exists!");
-            request.getRequestDispatcher("/Pages/auth/register.jsp").forward(request, response);
+        if (userDAO.isPhoneExists(phone)) {
+            request.setAttribute("error", "Phone number already exists");
+            request.getRequestDispatcher("Pages/register.jsp").forward(request, response);
             return;
         }
 
-        if (dao.isPhoneExists(phone)) {
-            request.setAttribute("errorMessage", "Phone number already exists!");
-            request.getRequestDispatcher("/Pages/auth/register.jsp").forward(request, response);
-            return;
-        }
-
-        User newUser = new User(fullName, email, username, phone, password, "waiter");
-
-        if (dao.registerUser(newUser)) {
-            response.sendRedirect("Pages/auth/login.jsp");
+        // Create new user
+        User user = new User(username, password, fullName, email, phone, role);
+        if (userDAO.registerUser(user)) {
+            response.sendRedirect("Pages/login.jsp");
         } else {
-            request.setAttribute("errorMessage", "Registration failed. Please try again.");
-            request.getRequestDispatcher("/Pages/auth/register.jsp").forward(request, response);
+            request.setAttribute("error", "Registration failed");
+            request.getRequestDispatcher("Pages/register.jsp").forward(request, response);
         }
     }
 }

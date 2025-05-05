@@ -6,7 +6,7 @@
 
 <%
     HttpSession sessionObj = request.getSession(false);
-    if (sessionObj == null || sessionObj.getAttribute("userWithSession") == null) {
+    if (sessionObj == null || sessionObj.getAttribute("user") == null) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;
     }
@@ -62,6 +62,7 @@
 </head>
 <body>
 
+<% request.setAttribute("currentPage", "Menu"); %>
 <jsp:include page="/Pages/Common/header.jsp" />
 
 <div class="menu-container">

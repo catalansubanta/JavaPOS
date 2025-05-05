@@ -1,60 +1,102 @@
 package com.javapos.controller;
 
-import com.javapos.dao.UserDAO;
-import com.javapos.model.User;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.IOException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import com.javapos.dao.UserDAO;
+import com.javapos.model.User;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private UserDAO userDAO;
 
-	@Override
+	public void init() {
+		userDAO = new UserDAO();
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		UserDAO dao = new UserDAO();
+		System.out.println("Login attempt - Username: " + username);
 
-		try {
-			if (dao.checkLogin(username, password)) {
-				//Fetch full user info
-				User user = dao.getUser(username);
+		// Validate input
+		if (username == null || username.trim().isEmpty() || 
+			password == null || password.trim().isEmpty()) {
+			request.setAttribute("error", "Username and password are required");
+			request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+			return;
+		}
 
-				//Create session and store user
+		User user = userDAO.validateUser(username, password);
+		System.out.println("User validation result: " + (user != null ? "Success" : "Failed"));
+
+		if (user != null) {
 				HttpSession session = request.getSession();
-				session.setAttribute("userWithSession", user);
-				session.setMaxInactiveInterval(30 * 60); // 30 min timeout
+			session.setAttribute("user", user);
+			session.setAttribute("role", user.getRole());
+			System.out.println("User role: " + user.getRole());
 
-				//Redirect to role-based dashboard
-				switch (user.getRole()) {
+			String redirectPath = "";
+			switch (user.getRole().toLowerCase()) {
 					case "admin":
-						response.sendRedirect(request.getContextPath() + "/Pages/HomePage.jsp");
+					redirectPath = "/Pages/Admin/home.jsp";
 						break;
 					case "cashier":
-						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+					redirectPath = "/Pages/Dashboard/cashier-dashboard.jsp";
 						break;
 					case "waiter":
-						response.sendRedirect(request.getContextPath() + "/Pages/Dashboard/dashboard.jsp");
+					redirectPath = "/Pages/Dashboard/waiter-dashboard.jsp";
 						break;
 					default:
-						response.sendRedirect(request.getContextPath() + "/Pages/HomePage.jsp");
-						break;
+					request.setAttribute("error", "Invalid user role");
+					request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+					return;
 				}
 
+			System.out.println("Redirecting to: " + redirectPath);
+			String contextPath = request.getContextPath();
+			System.out.println("Context path: " + contextPath);
+			response.sendRedirect(contextPath + redirectPath);
+			return;
 			} else {
-				//Invalid credentials
-				request.setAttribute("errorMessage", "Invalid username or password");
+			request.setAttribute("error", "Invalid username or password");
+			request.setAttribute("username", username);
+			request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+		}
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		// If user is already logged in, redirect to appropriate page
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("user") != null) {
+			String role = (String) session.getAttribute("role");
+			String redirectPath = "";
+			
+			switch (role.toLowerCase()) {
+				case "admin":
+					redirectPath = "/Pages/Admin/home.jsp";
+					break;
+				case "cashier":
+					redirectPath = "/Pages/Dashboard/cashier-dashboard.jsp";
+					break;
+				case "waiter":
+					redirectPath = "/Pages/Dashboard/waiter-dashboard.jsp";
+					break;
+				default:
 				request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
+					return;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			request.setAttribute("errorMessage", "Login failed due to an internal error.");
+			
+			response.sendRedirect(request.getContextPath() + redirectPath);
+		} else {
 			request.getRequestDispatcher("/Pages/auth/login.jsp").forward(request, response);
 		}
 	}

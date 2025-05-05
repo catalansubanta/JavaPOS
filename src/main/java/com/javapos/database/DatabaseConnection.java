@@ -5,13 +5,42 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String DATABASE_NAME = "POS";
-    private static final String USERNAME = "root";
+    private static final String URL = "jdbc:mysql://localhost:3306/POS?useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String USER = "root";
     private static final String PASSWORD = "";
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/" + DATABASE_NAME;
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
+    static {
+        try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            System.err.println("MySQL JDBC Driver not found: " + e.getMessage());
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+    }
+    
+    public static Connection getConnection() throws SQLException {
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            if (conn != null) {
+                System.out.println("Database connection successful!");
+                return conn;
+            } else {
+                throw new SQLException("Failed to make connection!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Database connection error: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+                System.out.println("Database connection closed.");
+            } catch (SQLException e) {
+                System.err.println("Error closing database connection: " + e.getMessage());
+            }
+        }
     }
 }

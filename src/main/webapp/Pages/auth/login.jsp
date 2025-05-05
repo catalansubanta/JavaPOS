@@ -1,41 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<style>
-  body { background-color: pink; }
-</style>
 	<meta charset="UTF-8">
-	<title>Login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="<%= request.getContextPath() %>/css/login.css">
+    <title>Login - JavaPOS</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../css/login.css">
 </head>
-<body>
+<body class="login-page">
 	<div class="login-container">
 		<div class="login-box">
-			<h2>POS Login</h2>
+            <h2>Login to JavaPOS</h2>
 
-			<!-- Error Message Display -->
-			<% if (request.getAttribute("errorMessage") != null) { %>
-				<p class="error"><%= request.getAttribute("errorMessage") %></p>
+            <% if (request.getAttribute("error") != null) { %>
+                <div class="error-message">
+                    <%= request.getAttribute("error") %>
+                </div>
 			<% } %>
 
-			<!--SINGLE LOGIN FORM -->
-			<form action="<%= request.getContextPath() %>/login" method="post">
+            <form action="<%= request.getContextPath() %>/login" method="post">
+                <div class="form-group">
 				<label for="username">Username</label>
-				<input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" 
+                           value="<%= request.getAttribute("username") != null ? request.getAttribute("username") : "" %>"
+                           required>
+                </div>
 
+                <div class="form-group">
 				<label for="password">Password</label>
 				<input type="password" id="password" name="password" required>
+                </div>
 
-				<button type="submit">Login</button>
+                <div class="form-group">
+                    <button type="submit" class="login-btn">Login</button>
+                </div>
 			</form>
 
-			<!--REGISTER LINK -->
-			<p style="text-align:center; margin-top: 15px;">
-				Don't have an account?
-				<a href="<%= request.getContextPath() %>/Pages/auth/register.jsp">Register here</a>
-			</p>
+            <div class="register-link">
+                Don't have an account? <a href="register.jsp">Register here</a>
+            </div>
 		</div>
 	</div>
 </body>
