@@ -4,13 +4,14 @@
 <head>
 	<meta charset="UTF-8">
     <title>Login - JavaPOS</title>
-    <link rel="stylesheet" type="text/css" href="../../css/main.css">
-    <link rel="stylesheet" type="text/css" href="../../css/login.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css" />
+
+    
 </head>
 <body class="login-page">
 	<div class="login-container">
 		<div class="login-box">
-            <h2>Login to JavaPOS</h2>
+            <h2>Login to Resturant POS</h2>
 
             <% if (request.getAttribute("error") != null) { %>
                 <div class="error-message">

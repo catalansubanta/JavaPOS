@@ -5,17 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/dashboard.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 
 <%
-    User user = (User) session.getAttribute("userWithSession");
+    User user = (User) session.getAttribute("user");
     if (user == null) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;
     }
 %>
+
 
 <!-- Header -->
 <jsp:include page="/Pages/Common/header.jsp" />

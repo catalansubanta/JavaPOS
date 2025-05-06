@@ -13,7 +13,13 @@ public class User {
     // Default constructor
     public User() {
     }
-
+  
+        public User(String username, String role) {
+            this.username = username;
+            this.role = role;
+        }
+        
+        
     // Constructor with all fields
     public User(String username, String password, String fullName, String email, String phone, String role) {
         this.username = username;

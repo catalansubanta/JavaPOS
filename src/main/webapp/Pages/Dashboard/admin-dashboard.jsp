@@ -1,86 +1,188 @@
-<%@ page import="com.javapos.model.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard - JavaPOS</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/dashboard.css">
-    <style>
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .dashboard-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .dashboard-btn {
-            display: block;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            color: #212529;
-            transition: all 0.3s ease;
-        }
-
-        .dashboard-btn:hover {
-            background-color: #e9ecef;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .dashboard-title {
-            text-align: center;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .dashboard-subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 2rem;
-        }
-    </style>
-</head>
-<body>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    User user = (User) session.getAttribute("user");
-    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
-        return;
-    }
+    request.setAttribute("currentPage", "dashboard");
 %>
 
-<% request.setAttribute("currentPage", "Dashboard"); %>
-<jsp:include page="/Pages/Common/header.jsp" />
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Restaurant POS</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <jsp:include page="/Pages/Common/header.jsp" />
+    
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your restaurant's operations from here</p>
+        </div>
 
-<main class="dashboard-container">
-    <h2 class="dashboard-title">Admin Dashboard</h2>
-    <p class="dashboard-subtitle">
-        Hello, <strong><%= user.getFullName() %></strong><br>
-        Choose any of the following actions to continue:
-    </p>
+        <!-- Dashboard Action Buttons -->
+        <div class="dashboard-actions">
+            <a href="${pageContext.request.contextPath}/admin/products" class="action-card">
+                <i class="fas fa-boxes"></i>
+                <span>Products</span>
+                <p>Manage your menu items and inventory</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/users" class="action-card">
+                <i class="fas fa-users-cog"></i>
+                <span>Users</span>
+                <p>Manage user accounts and roles</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/orders" class="action-card">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Orders</span>
+                <p>View and manage orders</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/reports" class="action-card">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+                <p>View performance and sales reports</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/settings" class="action-card">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+                <p>Configure system settings</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/backup" class="action-card">
+                <i class="fas fa-database"></i>
+                <span>Backup</span>
+                <p>Backup and restore your data</p>
+            </a>
+        </div>
 
-    <div class="dashboard-box">
-        <a href="<%= request.getContextPath() %>/Pages/Admin/sales.jsp" class="dashboard-btn">Sales Overview</a>
-        <a href="<%= request.getContextPath() %>/Pages/Admin/users.jsp" class="dashboard-btn">User Management</a>
-        <a href="<%= request.getContextPath() %>/Pages/Admin/orders.jsp" class="dashboard-btn">View Orders</a>
-        <a href="<%= request.getContextPath() %>/Pages/Menu/add-items.jsp" class="dashboard-btn">Add New Item</a>
-        <a href="<%= request.getContextPath() %>/Pages/Menu/edit-items.jsp" class="dashboard-btn">Edit/Delete Items</a>
-        <a href="<%= request.getContextPath() %>/Pages/Admin/reports.jsp" class="dashboard-btn">Reports</a>
+        <!-- Sales & Users Charts -->
+        <div class="chart-container">
+            <h3>Sales Overview</h3>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>User Distribution</h3>
+            <canvas id="usersChart"></canvas>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="recent-container">
+            <div class="recent-header">
+                <h3>Recent Orders</h3>
+                <a href="${pageContext.request.contextPath}/admin/orders" class="btn">View All</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${recentOrders}" var="order">
+                        <tr>
+                            <td>${order.orderId}</td>
+                            <td>${order.customerName}</td>
+                            <td>$${order.totalAmount}</td>
+                            <td>${order.status}</td>
+                            <td>${order.orderDate}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Users -->
+        <div class="recent-container">
+            <div class="recent-header">
+                <h3>Recent Users</h3>
+                <a href="${pageContext.request.contextPath}/admin/users" class="btn">View All</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${recentUsers}" var="user">
+                        <tr>
+                            <td>${user.userId}</td>
+                            <td>${user.fullName}</td>
+                            <td>${user.role}</td>
+                            <td>${user.email}</td>
+                            <td>${user.status}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
     </div>
-</main>
 
-<jsp:include page="/Pages/Common/footer.jsp" />
+    <jsp:include page="/Pages/Common/footer.jsp" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sales Overview Chart
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: [12000, 19000, 15000, 25000, 22000, 30000],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Sales Overview'
+                    }
+                }
+            }
+        });
+
+        // User Distribution Chart
+        const usersCtx = document.getElementById('usersChart').getContext('2d');
+        new Chart(usersCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Admin', 'Cashier', 'Waiter'],
+                datasets: [{
+                    label: 'Users by Role',
+                    data: [${adminCount}, ${cashierCount}, ${waiterCount}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Distribution'
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

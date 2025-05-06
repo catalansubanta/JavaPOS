@@ -1,4 +1,4 @@
-package com.javapos.controller;
+package com.javapos.controller.auth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

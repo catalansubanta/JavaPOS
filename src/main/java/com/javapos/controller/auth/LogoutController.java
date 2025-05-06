@@ -1,4 +1,4 @@
-package com.javapos.controller;
+package com.javapos.controller.auth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class LogoutController extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("Pages/login.jsp");
+        response.sendRedirect("Pages/auth/login.jsp");
         }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 

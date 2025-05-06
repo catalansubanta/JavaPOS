@@ -4,32 +4,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Statement;             // ✅ Required for getTotalUsers()
+import java.util.ArrayList;           // ✅ Required for getUsersByRole()
+import java.util.List;                // ✅ Required for method return types
+
 import com.javapos.database.DatabaseConnection;
 import com.javapos.model.User;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class UserDAO {
     private Connection connection;
 
+    // ✅ Proper constructor: initializes connection
     public UserDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Failed to establish database connection in UserDAO constructor.");
         }
     }
 
+    // ✅ Example login validation method
     public User validateUser(String username, String password) {
+        if (connection == null) {
+            System.err.println("Connection is null in validateUser()");
+            return null;
+        }
+
         String query = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
-            
-            System.out.println("Executing query: " + query);
-            System.out.println("Parameters - Username: " + username + ", Password: " + password);
-            
+
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 User user = new User();
@@ -40,37 +47,12 @@ public class UserDAO {
                 user.setEmail(rs.getString("Email"));
                 user.setPhone(rs.getString("Phone"));
                 user.setRole(rs.getString("Role"));
-                System.out.println("User found: " + user.getUsername() + " with role: " + user.getRole());
                 return user;
             }
-            System.out.println("No user found with the given credentials");
-            return null;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
-    }
 
-    public User getUserById(int userId) throws SQLException {
-        String query = "SELECT * FROM Users WHERE User_ID = ?";
-        
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setUserId(rs.getInt("User_ID"));
-                    user.setUsername(rs.getString("Username"));
-                    user.setPassword(rs.getString("Password"));
-                    user.setFullName(rs.getString("Full_Name"));
-                    user.setEmail(rs.getString("Email"));
-                    user.setPhone(rs.getString("Phone"));
-                    user.setRole(rs.getString("Role"));
-                    return user;
-                }
-            }
-        }
         return null;
     }
 

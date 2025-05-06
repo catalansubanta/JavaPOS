@@ -5,41 +5,40 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/POS?useSSL=false&allowPublicKeyRetrieval=true";
+
+    // Update these values if needed
+    private static final String URL = "jdbc:mysql://localhost:3306/POS?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = ""; // Set your real password here
 
     static {
         try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("✅ MySQL JDBC Driver registered successfully.");
         } catch (ClassNotFoundException e) {
-            System.err.println("MySQL JDBC Driver not found: " + e.getMessage());
+            System.err.println("❌ MySQL JDBC Driver not found: " + e.getMessage());
             throw new RuntimeException("MySQL JDBC Driver not found", e);
         }
     }
-    
+
     public static Connection getConnection() throws SQLException {
         try {
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            if (conn != null) {
-                System.out.println("Database connection successful!");
-                return conn;
-            } else {
-                throw new SQLException("Failed to make connection!");
-            }
+            System.out.println("✅ Database connection established.");
+            return conn;
         } catch (SQLException e) {
-            System.err.println("Database connection error: " + e.getMessage());
+            System.err.println("❌ Database connection failed: " + e.getMessage());
             throw e;
         }
     }
-    
+
     public static void closeConnection(Connection conn) {
         if (conn != null) {
             try {
                 conn.close();
-                System.out.println("Database connection closed.");
+                System.out.println("ℹ️ Database connection closed.");
             } catch (SQLException e) {
-                System.err.println("Error closing database connection: " + e.getMessage());
+                System.err.println("⚠️ Error closing connection: " + e.getMessage());
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.javapos.controller;
+package com.javapos.controller.auth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -46,7 +46,7 @@ public class LoginController extends HttpServlet {
 			String redirectPath = "";
 			switch (user.getRole().toLowerCase()) {
 					case "admin":
-					redirectPath = "/Pages/Admin/home.jsp";
+					redirectPath = "/Pages/Admin/admin-home.jsp";
 						break;
 					case "cashier":
 					redirectPath = "/Pages/Dashboard/cashier-dashboard.jsp";
