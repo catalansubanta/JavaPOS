@@ -8,11 +8,12 @@ public class Item {
     private String category;
     private float stock;
     private String unit;
+    private String imagePath;
 
     // Constructors
     public Item() {}
 
-    public Item(int itemId, String itemName, String description, double price, String category, float stock, String unit) {
+    public Item(int itemId, String itemName, String description, double price, String category, float stock, String unit, String imagePath) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.description = description;
@@ -20,6 +21,7 @@ public class Item {
         this.category = category;
         this.stock = stock;
         this.unit = unit;
+        this.imagePath = imagePath;
     }
 
     // Getters and Setters
@@ -43,4 +45,7 @@ public class Item {
 
     public String getUnit() { return unit; }
     public void setUnit(String unit) { this.unit = unit; }
+    
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

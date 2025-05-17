@@ -1,7 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpSession" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="javax.servlet.*, javax.servlet.http.*, javax.servlet.annotation.*" %>
+
 <%
-    request.setAttribute("currentPage", "dashboard");
+    if (session == null) {
+        // no session yet
+    } else {
+        // session exists, you can use session here
+    }
 %>
 
 <!DOCTYPE html>
@@ -24,32 +31,32 @@
 
         <!-- Dashboard Action Buttons -->
         <div class="dashboard-actions">
-            <a href="${pageContext.request.contextPath}/admin/products" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Admin/admin-menu.jsp" class="action-card">
                 <i class="fas fa-boxes"></i>
-                <span>Products</span>
+                <span>Menu</span>
                 <p>Manage your menu items and inventory</p>
             </a>
-            <a href="${pageContext.request.contextPath}/admin/users" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Admin/admin-users.jsp" class="action-card">
                 <i class="fas fa-users-cog"></i>
                 <span>Users</span>
                 <p>Manage user accounts and roles</p>
             </a>
-            <a href="${pageContext.request.contextPath}/admin/orders" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Orders/view-order.jsp" class="action-card">
                 <i class="fas fa-clipboard-list"></i>
                 <span>Orders</span>
                 <p>View and manage orders</p>
             </a>
-            <a href="${pageContext.request.contextPath}/admin/reports" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Reports/sales-report.jsp" class="action-card">
                 <i class="fas fa-chart-bar"></i>
                 <span>Reports</span>
                 <p>View performance and sales reports</p>
             </a>
-            <a href="${pageContext.request.contextPath}/admin/settings" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Common/page-under.jsp" class="action-card">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
                 <p>Configure system settings</p>
             </a>
-            <a href="${pageContext.request.contextPath}/admin/backup" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Common/page-under.jsp" class="action-card">
                 <i class="fas fa-database"></i>
                 <span>Backup</span>
                 <p>Backup and restore your data</p>
@@ -131,58 +138,5 @@
 
     <jsp:include page="/Pages/Common/footer.jsp" />
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Sales Overview Chart
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        new Chart(salesCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Monthly Sales',
-                    data: [12000, 19000, 15000, 25000, 22000, 30000],
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Sales Overview'
-                    }
-                }
-            }
-        });
-
-        // User Distribution Chart
-        const usersCtx = document.getElementById('usersChart').getContext('2d');
-        new Chart(usersCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Admin', 'Cashier', 'Waiter'],
-                datasets: [{
-                    label: 'Users by Role',
-                    data: [${adminCount}, ${cashierCount}, ${waiterCount}],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 206, 86, 0.5)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'User Distribution'
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

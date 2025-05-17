@@ -25,93 +25,7 @@
     <title>Menu Items - Restaurant POS</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .products-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .search-bar {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: #4996d1;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #3a7ab0;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-        }
-
-        .products-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .products-table th,
-        .products-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .products-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-
-        .products-table tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+    
 </head>
 <body>
     <jsp:include page="/Pages/Common/header.jsp">
@@ -186,6 +100,8 @@
     </div>
 
     <jsp:include page="/Pages/Common/footer.jsp"/>
+
+<!-- need to change this  --> 
 
     <script>
         function searchItems() {

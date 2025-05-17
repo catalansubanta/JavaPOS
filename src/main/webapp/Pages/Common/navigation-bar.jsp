@@ -1,71 +1,50 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.javapos.model.User" %> <!-- Import the User class -->
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL Core Taglib -->
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.javapos.model.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="javax.servlet.*, javax.servlet.http.*, javax.servlet.annotation.*" %>
+
+
 
 <%
-String currentPage = request.getParameter("currentPage") != null ? request.getParameter("currentPage") : "";
-String userType = "";
-if (session.getAttribute("user") != null) {
-    User user = (User) session.getAttribute("user");
-    userType = user.getRole();
-}
+    String currentPage = request.getParameter("currentPage") != null ? request.getParameter("currentPage") : "";
+    String userType = "";
+    if (session.getAttribute("user") != null) {
+        User user = (User) session.getAttribute("user");
+        userType = user.getRole();
+        request.setAttribute("userType", userType); // allow JSTL access
+        request.setAttribute("currentPage", currentPage); // allow JSTL access
+    }
 %>
 
-<nav class="main-nav">
-    <ul class="nav-list">
-        
-        <c:if test="${not empty sessionScope.user}">
-            <c:set var="userType" value="${sessionScope.user.role}" />
-        </c:if>
-        
-        <!-- Admin Navigation -->
-        <c:if test="${userType == 'admin'}">
-             <li class="nav-item ${currentPage.contains('admin-home') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/Pages/Admin/admin-home.jsp">Home</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('admin-dashboard') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/Pages/Dashboard/admin-dashboard.jsp">Dashboard</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('menu-list') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/Pages/Menu/menu-list.jsp">Menu</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('users') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/Pages/Admin/users.jsp">Users</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('view-order') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/Pages/Orders/view-order.jsp">Orders</a>
-                </li>
-        </c:if>
+<div class="main-nav">
+    <c:choose>
+        <c:when test="${userType == 'admin'}">
+            <a class="nav-btn ${currentPage.contains('admin-home') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/Pages/Admin/admin-home.jsp">Home</a>
+            <a class="nav-btn ${currentPage.contains('admin-dashboard') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/Pages/Dashboard/admin-dashboard.jsp">Dashboard</a>
+            <a class="nav-btn ${currentPage.contains('profile') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/Pages/Profile/user-profile.jsp">Profile</a>
+        </c:when>
 
-        <!-- Cashier Navigation -->
-        <c:if test="${userType == 'cashier'}">
-            <li class="nav-item ${currentPage.contains('home') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/cashier/home">Home</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('orders') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/cashier/orders">Orders</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('payments') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/cashier/payments">Payments</a>
-                </li>
-        </c:if>
+        <c:when test="${userType == 'cashier'}">
+            <a class="nav-btn ${currentPage.contains('cashier-dashboard') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/cashier/dashboard">Dashboard</a>
+            <a class="nav-btn ${currentPage.contains('orders') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/cashier/orders">Orders</a>
+            <a class="nav-btn ${currentPage.contains('profile') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/Pages/Profile/user-profile.jsp">Profile</a>
+        </c:when>
 
-        <!-- Waiter Navigation -->
-        <c:if test="${userType == 'waiter'}">
-            <li class="nav-item ${currentPage.contains('home') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/waiter/home">Home</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('tables') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/waiter/tables">Tables</a>
-                </li>
-                <li class="nav-item ${currentPage.contains('orders') ? 'active' : ''}">
-                    <a href="${pageContext.request.contextPath}/waiter/orders">Orders</a>
-                </li>
-        </c:if>
-
-        <!-- Common Profile Link -->
-        <li class="nav-item ${currentPage.contains('profile') ? 'active' : ''}">
-            <a href="${pageContext.request.contextPath}/Pages/Profile/user-profile.jsp">Profile</a>
-        </li>
-    </ul>
-</nav>
+        <c:when test="${userType == 'waiter'}">
+            <a class="nav-btn ${currentPage.contains('waiter-dashboard') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/waiter/dashboard">Dashboard</a>
+            <a class="nav-btn ${currentPage.contains('cart') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/waiter/cart">Cart</a>
+            <a class="nav-btn ${currentPage.contains('menu') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/waiter/menu">Menu</a>
+            <a class="nav-btn ${currentPage.contains('profile') ? 'active' : ''}"
+               href="${pageContext.request.contextPath}/Pages/Profile/user-profile.jsp">Profile</a>
+        </c:when>
+    </c:choose>
+</div>
