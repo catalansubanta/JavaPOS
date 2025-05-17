@@ -1,12 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Under Construction</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 </head>
 <body>
 
+    <jsp:include page="/Pages/Common/header.jsp" />
+
+    <div class="container">
+        <h1>🚧 Page Under Construction 🚧</h1>
+        <p>Currently all of the orders are hidden and cannot be viewed!</p>
+    </div>
+    
+     <jsp:include page="/Pages/Common/footer.jsp" />
 </body>
 </html>

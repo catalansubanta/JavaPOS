@@ -1,37 +1,25 @@
 package com.javapos.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;             // ✅ Required for getTotalUsers()
-import java.util.ArrayList;           // ✅ Required for getUsersByRole()
-import java.util.List;                // ✅ Required for method return types
-
 import com.javapos.database.DatabaseConnection;
 import com.javapos.model.User;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private Connection connection;
 
-    // ✅ Proper constructor: initializes connection
     public UserDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to establish database connection in UserDAO constructor.");
+            System.err.println("Failed to establish DB connection in UserDAO: " + e.getMessage());
+            throw new RuntimeException("Cannot initialize UserDAO", e);
         }
     }
 
-    // ✅ Example login validation method
     public User validateUser(String username, String password) {
-        if (connection == null) {
-            System.err.println("Connection is null in validateUser()");
-            return null;
-        }
-
         String query = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
@@ -39,63 +27,12 @@ public class UserDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                User user = new User();
-                user.setUserId(rs.getInt("User_ID"));
-                user.setUsername(rs.getString("Username"));
-                user.setPassword(rs.getString("Password"));
-                user.setFullName(rs.getString("Full_Name"));
-                user.setEmail(rs.getString("Email"));
-                user.setPhone(rs.getString("Phone"));
-                user.setRole(rs.getString("Role"));
-                return user;
+                return mapUser(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
-    }
-
-    public boolean isEmailExists(String email) {
-        String query = "SELECT COUNT(*) FROM Users WHERE Email = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean isUsernameExists(String username) {
-        String query = "SELECT COUNT(*) FROM Users WHERE Username = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean isPhoneExists(String phone) {
-        String query = "SELECT COUNT(*) FROM Users WHERE Phone = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, phone);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public boolean registerUser(User user) {
@@ -128,60 +65,110 @@ public class UserDAO {
         return false;
     }
 
-    public List<User> getUsersByRole(String role) {
-        List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM Users WHERE Role = ?";
-        
+    public boolean updateUserPassword(User user) {
+        String query = "UPDATE Users SET Password = ? WHERE User_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, role);
+            stmt.setString(1, user.getPassword());
+            stmt.setInt(2, user.getUserId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isEmailExists(String email) {
+        return existsByField("Email", email);
+    }
+
+    public boolean isUsernameExists(String username) {
+        return existsByField("Username", username);
+    }
+
+    public boolean isPhoneExists(String phone) {
+        return existsByField("Phone", phone);
+    }
+
+    private boolean existsByField(String field, String value) {
+        String query = "SELECT COUNT(*) FROM Users WHERE " + field + " = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                User user = new User();
-                user.setUserId(rs.getInt("User_ID"));
-                user.setUsername(rs.getString("Username"));
-                user.setFullName(rs.getString("Full_Name"));
-                user.setRole(rs.getString("Role"));
-                user.setEmail(rs.getString("Email"));
-                users.add(user);
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        return users;
+        return false;
     }
 
     public int getTotalUsers() {
-        String query = "SELECT COUNT(*) as total FROM Users";
-        int total = 0;
-        
+        String query = "SELECT COUNT(*) AS total FROM Users";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-            
             if (rs.next()) {
-                total = rs.getInt("total");
+                return rs.getInt("total");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        return total;
+        return 0;
     }
 
-    public boolean updateUserPassword(User user) {
-        String sql = "UPDATE users SET password = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, user.getPassword());
-            stmt.setInt(2, user.getId());
-            
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+    public int countByRole(String role) {
+        String query = "SELECT COUNT(*) AS count FROM Users WHERE Role = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, role);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return 0;
+    }
+
+    public List<User> getUsersByRole(String role) {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM Users WHERE Role = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, role);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public List<User> getRecentUsers(int limit) {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM Users ORDER BY Created_At DESC LIMIT ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    private User mapUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getInt("User_ID"));
+        user.setUsername(rs.getString("Username"));
+        user.setPassword(rs.getString("Password"));
+        user.setFullName(rs.getString("Full_Name"));
+        user.setEmail(rs.getString("Email"));
+        user.setPhone(rs.getString("Phone"));
+        user.setRole(rs.getString("Role"));
+        return user;
     }
 }

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+</html><%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,8 +14,8 @@
     <jsp:include page="/Pages/Common/header.jsp" />
 
     <div class="container">
-        <h1>Nothing to SHOW! </h1>
-        <p>no reports to re right now</p>
+        <h1>🚧 Page Under Construction 🚧</h1>
+        <p>Items cannot be searched at this moment</p>
     </div>
     
      <jsp:include page="/Pages/Common/footer.jsp" />

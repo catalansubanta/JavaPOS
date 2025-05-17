@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Register - JavaPOS</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/css/register.css">
+  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/register.css">
 </head>
 <body>
   <div class="register-container">

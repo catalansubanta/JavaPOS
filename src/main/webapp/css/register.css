@@ -5,10 +5,21 @@
     box-sizing: border-box;
 }
 
-body {
+:root {
+    --primary-color: #4996D1;        /* Blue */
+    --primary-hover: #ffe87c;        /* Yellow Hover */
+    --active-link: #556b76;          /* Dark Blue-Gray for active nav */
+    --body-bg: #f0f8ff;              /* Alice Blue */
+    --text-main: #333333;            /* Main text */
+    --text-muted: #556b7c;           /* Muted/secondary text */
+    --error-color: #ff1313;          /* Red for errors */
+}
+
+/* Body */
+body.login-page {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e8f4fd; /* light background */
-    color: #333;
+    background-color: var(--body-bg);
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,14 +27,14 @@ body {
 }
 
 /* Container */
-.register-container {
+.login-container {
     width: 100%;
     max-width: 500px;
     padding: 20px;
 }
 
-/* Form Box */
-.register-box {
+/* Login Box */
+.login-box {
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -31,65 +42,76 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.register-box h2 {
+.login-box h2 {
     text-align: center;
-    color: #4996D1;
+    color: var(--primary-color);
     margin-bottom: 20px;
 }
 
 /* Labels & Inputs */
-.register-box label {
+.form-group label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
-    color: #333;
+    color: var(--text-main);
 }
 
-.register-box input {
+.form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-top: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(73, 150, 209, 0.2);
 }
 
 /* Buttons */
-.register-box button {
+.login-btn {
     width: 100%;
     padding: 12px;
     margin-top: 25px;
     font-size: 16px;
-    background-color: #4996D1;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.register-box button:hover {
-    background-color: #357cb5;
+.login-btn:hover {
+    background-color: var(--primary-hover);
+    color: var(--text-main);
 }
 
-/* Links and Paragraph */
-.register-box p {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.register-box a {
-    color: #4996D1;
-    text-decoration: none;
-}
-
-.register-box a:hover {
-    text-decoration: underline;
-}
-
-/* Error message */
-.error {
-    color: #ff1313;
+/* Error Message */
+.error-message {
+    color: var(--error-color);
     font-weight: bold;
     margin-top: 10px;
     text-align: center;
+}
+
+/* Register Link */
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.register-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
 }

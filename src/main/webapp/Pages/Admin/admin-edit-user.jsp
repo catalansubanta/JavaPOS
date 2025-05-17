@@ -2,6 +2,8 @@
 <%@ page import="com.javapos.model.User" %>
 <%@ page import="java.lang.String" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="javax.servlet.*, javax.servlet.http.*, javax.servlet.annotation.*" %>
+
 <%
     request.setAttribute("currentPage", "users");
 %>
@@ -103,7 +105,8 @@
     </div>
 
     <jsp:include page="/Pages/Common/footer.jsp" />
-
+    
+<!-- need to change -->
     <script>
         document.querySelector('form').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;

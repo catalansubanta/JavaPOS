@@ -13,8 +13,8 @@
     <jsp:include page="/Pages/Common/header.jsp" />
 
     <div class="container">
-        <h1>Nothing to SHOW! </h1>
-        <p>no reports to re right now</p>
+        <h1>🚧 Page Under Construction 🚧</h1>
+        <p>We're working hard to bring you this page soon. Please check back later!</p>
     </div>
     
      <jsp:include page="/Pages/Common/footer.jsp" />

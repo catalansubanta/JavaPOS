@@ -21,8 +21,9 @@
     <div class="container">
         <div class="dashboard-header">
             <h1>Manage Users</h1>
+            <br>
             <div class="header-actions">
-                <a href="${pageContext.request.contextPath}/admin/user-form" class="btn">
+                <a href="${pageContext.request.contextPath}/Pages/Admin/admin-add-user.jsp" class="btn">
                     <i class="fas fa-plus"></i> Add New User
                 </a>
             </div>
@@ -98,17 +99,5 @@
 
     <jsp:include page="/Pages/Common/footer.jsp" />
 
-    <script>
-        function searchUsers() {
-            const searchTerm = document.getElementById('searchInput').value;
-            window.location.href = '?search=' + encodeURIComponent(searchTerm);
-        }
-
-        function deleteUser(userId) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                window.location.href = '${pageContext.request.contextPath}/admin/delete-user?id=' + userId;
-            }
-        }
-    </script>
 </body>
 </html> 
