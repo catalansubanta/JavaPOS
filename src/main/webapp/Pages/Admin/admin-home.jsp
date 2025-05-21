@@ -8,7 +8,7 @@
 
 
 <%
-    User user = (User) session.getAttribute("user");
+    User user = (User) session.getAttribute("loggedInUser");
     if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;

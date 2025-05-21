@@ -6,12 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    // User role check (only admin or waiter allowed)
-    User user = (User) session.getAttribute("user");
-    if (user == null || (!"admin".equalsIgnoreCase(user.getRole()))) {
-        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
-        return;
-    }
+		User user = (User) session.getAttribute("loggedInUser");
+		if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+    		response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
+   			 return;
+		}
 
     ItemDAO itemDAO = new ItemDAO();
     String search = request.getParameter("search");

@@ -39,9 +39,9 @@ public class LoginController extends HttpServlet {
 
 		if (user != null) {
 				HttpSession session = request.getSession();
-			session.setAttribute("user", user);
+			session.setAttribute("loggedInUser", user);
 			session.setAttribute("role", user.getRole());
-			System.out.println("User role: " + user.getRole());
+			System.out.println("loggedInUser role: " + user.getRole());
 
 			String redirectPath = "";
 			switch (user.getRole().toLowerCase()) {
@@ -76,7 +76,7 @@ public class LoginController extends HttpServlet {
 			throws ServletException, IOException {
 		// If user is already logged in, redirect to appropriate page
 		HttpSession session = request.getSession(false);
-		if (session != null && session.getAttribute("user") != null) {
+		if (session != null && session.getAttribute("loggedInUser") != null) {
 			String role = (String) session.getAttribute("role");
 			String redirectPath = "";
 			

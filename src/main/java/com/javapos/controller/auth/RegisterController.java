@@ -53,7 +53,7 @@ public class RegisterController extends HttpServlet {
         }
 
         // Create new user object with hashed password
-        User user = new User(username, hashedPassword, fullName, email, phone, role);
+        User user = new User(username, hashedPassword, fullName, email, phone, role, "active");
 
         // Attempt to register the user
         if (userDAO.registerUser(user)) {

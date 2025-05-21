@@ -205,3 +205,364 @@ button:hover,
     color: #556b7c;
 }
 
+.report-box {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.report-box p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+:root {
+  --body-bg: #f0f8ff;
+}
+
+
+.tables-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+    }
+
+    .table-card {
+        border-radius: 10px;
+        padding: 20px;
+        background: white;
+        text-align: center;
+        transition: 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .table-card a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .table-card h3 {
+        margin-bottom: 10px;
+    }
+
+    .table-card.available {
+        border: 2px solid #4CAF50;
+        background-color: #e8f5e9;
+    }
+
+    .table-card.occupied {
+        border: 2px solid #f44336;
+        background-color: #ffebee;
+    }
+
+    .table-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* === ERROR PAGE STYLING === */
+
+.error-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    text-align: center;
+    border-radius: 8px;
+}
+
+.error-icon {
+    font-size: 64px;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.error-icon i {
+    font-size: 72px;
+}
+
+.error-container h1 {
+    font-size: 28px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.error-message p {
+    font-size: 16px;
+    color: #555;
+    margin: 15px 0;
+}
+
+.error-details-text {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+    font-style: italic;
+    word-break: break-word;
+}
+
+.error-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.error-actions .btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-actions .btn-secondary {
+    background-color: #95a5a6;
+}
+
+.error-actions .btn-info {
+    background-color: #1abc9c;
+}
+
+.error-actions .btn:hover {
+    background-color: #2980b9;
+}
+
+.error-actions .btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.error-actions .btn-info:hover {
+    background-color: #16a085;
+}
+
+/* Responsive tweaks */
+@media (max-width: 500px) {
+    .error-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+    }
+
+    .error-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input[type="text"],
+.search-bar select {
+    padding: 8px;
+    min-width: 200px;
+}
+
+.search-bar .btn {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 6px;
+    background: #f9f9f9;
+}
+
+.item-card h3 {
+    margin-top: 0;
+}
+
+.item-card form {
+    margin-top: 10px;
+}
+
+.item-card input[type="number"] {
+    width: 60px;
+    margin-right: 10px;
+}
+/* Container for orders pages */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333; /* Main text color */
+}
+
+/* Headings */
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Tables styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #4996d1;
+    color: white;
+}
+
+thead th {
+    padding: 12px 15px;
+    font-weight: 600;
+    text-align: left;
+}
+
+tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+tbody td {
+    padding: 12px 15px;
+    color: #333;
+}
+
+/* Buttons */
+button,
+.btn {
+    background-color: #4996d1;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+    background-color: #ffe87c;
+    color: #333;
+}
+
+/* Muted text */
+.muted {
+    color: #556b7c;
+}
+
+/* Form inputs inside tables */
+input[type="number"],
+input[type="text"],
+select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 60px;
+}
+
+/* Responsive table for small devices */
+@media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tbody tr {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    tbody td {
+        padding-left: 50%;
+        position: relative;
+        text-align: right;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-left: 10px;
+        font-weight: 600;
+        text-align: left;
+        color: #4996d1;
+    }
+
+    input[type="number"] {
+        width: 100%;
+    }
+}
+.search-bar button {
+    background-color: #4996d1;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #ffe87c;
+    color: #333;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+    

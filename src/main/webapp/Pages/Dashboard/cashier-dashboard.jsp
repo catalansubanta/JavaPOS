@@ -7,10 +7,10 @@
     <title>Cashier Dashboard - JavaPOS</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/dashboard.css">
 </head>
-<body>
+<body class="dashboard-body">
 
 <%
-    User user = (User) session.getAttribute("userWithSession");
+    User user = (User) session.getAttribute("loggedInUser");
     if (user == null || !"cashier".equals(user.getRole())) {
         response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
         return;
@@ -20,28 +20,41 @@
 <% request.setAttribute("currentPage", "cashier-dashboard"); %>
 <jsp:include page="/Pages/Common/header.jsp" />
 
-<!-- Dashboard Content -->
 <main class="dashboard-container">
 
-    <h2 class="dashboard-title">Welcome to the Cashier Dashboard</h2>
+    <h2 class="dashboard-title">Welcome, <%= user.getFullName() %>!</h2>
 
-    <p class="dashboard-subtitle">
-        Hello, <strong><%= user.getFullName() %></strong><br>
-        Select an action below to proceed:
-    </p>
+    <!-- Quick Search -->
+    <div class="quick-search">
+        <input type="text" placeholder="Search Orders or Payments..." />
+        <button type="button">Search</button>
+    </div>
 
-    <div class="dashboard-box">
-        <a href="#" class="dashboard-btn">View Orders</a>
-        <a href="#" class="dashboard-btn">Order Details</a>
-        <a href="#" class="dashboard-btn">Pending Payments</a>
-        <a href="#" class="dashboard-btn">Completed Payments</a>
-        <a href="#" class="dashboard-btn">Process Payment</a>
-        <a href="#" class="dashboard-btn">Search Orders</a>
+    <div class="dashboard-sections">
+
+        <!-- Recent Orders -->
+        <section class="dashboard-box">
+            <h3>Recent Orders</h3>
+            <div class="box-content">
+                <p>No. of recent unpaid orders: 5</p>
+                <button onclick="location.href='<%= request.getContextPath() %>/Pages/Cashier/cashier-orders.jsp'">View Orders</button>
+                <button onclick="location.href='<%= request.getContextPath() %>/Pages/Payment/process-payment.jsp'">Process to Payment</button>
+            </div>
+        </section>
+
+        <!-- Recent Payments -->
+        <section class="dashboard-box">
+            <h3>Recent Payments</h3>
+            <div class="box-content">
+                <p>Latest transactions completed today.</p>
+                <button onclick="location.href='<%= request.getContextPath() %>/Pages/Cashier/cashier-payment.jsp'">View All Payments</button>
+            </div>
+        </section>
+
     </div>
 
 </main>
 
-<!-- Include Footer -->
 <jsp:include page="/Pages/Common/footer.jsp" />
 
 </body>

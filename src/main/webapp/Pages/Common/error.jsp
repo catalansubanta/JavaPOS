@@ -74,5 +74,8 @@
             </div>
         </div>
     </div>
+    
+    <jsp:include page="/Pages/Common/footer.jsp" />
 </body>
 </html>
+

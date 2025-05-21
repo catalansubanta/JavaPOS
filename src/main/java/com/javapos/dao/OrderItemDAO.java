@@ -18,47 +18,56 @@ public class OrderItemDAO {
         }
     }
 
-    // ✅ Add OrderItem
-    public boolean addOrderItem(OrderItem item) {
+    public void addOrderItem(OrderItem orderItem) {
         String sql = "INSERT INTO orderitems (Order_ID, Item_ID, Quantity, Price, Subtotal) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, item.getOrderId());
-            stmt.setInt(2, item.getItemId());
-            stmt.setInt(3, item.getQuantity());
-            stmt.setDouble(4, item.getPrice());
-            stmt.setDouble(5, item.getSubtotal());
-            return stmt.executeUpdate() > 0;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderItem.getOrderId());
+            ps.setInt(2, orderItem.getItemId());
+            ps.setInt(3, orderItem.getQuantity());
+            ps.setDouble(4, orderItem.getPrice());
+            ps.setDouble(5, orderItem.getSubtotal());
+
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    // ✅ Get OrderItems by Order_ID
+
     public List<OrderItem> getOrderItemsByOrderId(int orderId) {
-        List<OrderItem> itemList = new ArrayList<>();
+        List<OrderItem> items = new ArrayList<>();
         String sql = "SELECT * FROM orderitems WHERE Order_ID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, orderId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                OrderItem item = new OrderItem(
-                    rs.getInt("OrderItem_ID"),
-                    rs.getInt("Order_ID"),
-                    rs.getInt("Item_ID"),
-                    rs.getInt("Quantity"),
-                    rs.getDouble("Price"),
-                    rs.getDouble("Subtotal")
-                );
-                itemList.add(item);
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    OrderItem item = new OrderItem();
+                    item.setOrderItemId(rs.getInt("OrderItem_ID"));
+                    item.setOrderId(rs.getInt("Order_ID"));
+                    item.setItemId(rs.getInt("Item_ID"));
+                    item.setQuantity(rs.getInt("Quantity"));
+                    item.setPrice(rs.getDouble("Price"));
+                    item.setSubtotal(rs.getDouble("Subtotal"));
+                    items.add(item);
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return itemList;
-    }
 
-    // ✅ Delete all order items by Order_ID
+        return items;
+    }
+    
+    
+    
     public boolean deleteOrderItemsByOrderId(int orderId) {
         String sql = "DELETE FROM orderitems WHERE Order_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -82,7 +91,6 @@ public class OrderItemDAO {
         return false;
     }
 
-    // ✅ Update order item quantity and subtotal
     public boolean updateOrderItem(OrderItem item) {
         String sql = "UPDATE orderitems SET Quantity = ?, Price = ?, Subtotal = ? WHERE OrderItem_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -96,4 +104,21 @@ public class OrderItemDAO {
         }
         return false;
     }
+    
+    
+    public boolean insertOrderItem(OrderItem item) {
+        String sql = "INSERT INTO orderitems (Order_ID, Item_ID, Quantity, Price, Subtotal) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, item.getOrderId());
+            stmt.setInt(2, item.getItemId());
+            stmt.setInt(3, item.getQuantity());
+            stmt.setDouble(4, item.getPrice());
+            stmt.setDouble(5, item.getSubtotal());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

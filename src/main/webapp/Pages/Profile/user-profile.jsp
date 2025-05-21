@@ -1,44 +1,45 @@
-<%@ page import="com.javapos.model.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.javapos.model.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    User currentUser = (User) session.getAttribute("loggedInUser");
+    request.setAttribute("currentUser", currentUser); // <-- Add this line
+    request.setAttribute("currentPage", "profile");
+%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <jsp:include page="/Pages/Common/header.jsp" />
 
-<%
-    User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
-        return;
-    }
-%>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>My Profile</h1>
+        </div>
 
-
-<!-- Header -->
-<jsp:include page="/Pages/Common/header.jsp" />
-
-<main>
-    <div class="welcome-box">
-        <h2 style="color: #4996D1;">Hello, <%= user.getFullName() %>!</h2>
-
-        <div class="profile-box">
-            <h4>Your Profile</h4>
-            <p><strong>Username:</strong> <%= user.getUsername() %></p>
-            <p><strong>Email:</strong> <%= user.getEmail() %></p>
-            <p><strong>Phone:</strong> <%= user.getPhone() %></p>
-            <p><strong>Role:</strong> <%= user.getRole() %></p>
+        <div class="profile-details">
+            <p><strong>Full Name:</strong> ${currentUser.fullName}</p>
             <br>
-            <a href="edit-profile.jsp" class="btn">Edit Profile</a>
+            <p><strong>Username:</strong> ${currentUser.username}</p>
+            <br>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <br>
+            <p><strong>Phone:</strong> ${currentUser.phone}</p>
+            <br>
+            <p><strong>Role:</strong> ${currentUser.role}</p>
+            <br>
+
+            <a href="${pageContext.request.contextPath}/Pages/Profile/edit-profile.jsp" class="btn">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
         </div>
     </div>
-</main>
 
-<!-- Footer -->
-<jsp:include page="/Pages/Common/footer.jsp" />
-
+    <jsp:include page="/Pages/Common/footer.jsp" />
 </body>
 </html>
