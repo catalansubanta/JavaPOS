@@ -186,4 +186,31 @@ public class ItemDAO {
         }
         return 0;
     }
+    
+    public List<Item> searchItemsByName(String keyword) {
+        List<Item> itemList = new ArrayList<>();
+        String sql = "SELECT * FROM items WHERE name LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemId(rs.getInt("item_id"));
+                item.setItemName(rs.getString("item_name"));
+                item.setPrice(rs.getDouble("price"));
+                item.setCategory(rs.getString("category"));
+                item.setImagePath(rs.getString("image_path")); // Adjust if you use a different column name
+                itemList.add(item);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return itemList;
+    }
 }

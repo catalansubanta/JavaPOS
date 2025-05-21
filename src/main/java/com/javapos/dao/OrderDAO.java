@@ -18,75 +18,173 @@ public class OrderDAO {
         }
     }
 
-    // Get total sales from the Total_Price of completed orders
-    public double getTotalSales() {
-        String query = "SELECT SUM(Total_Price) AS total FROM Orders WHERE Order_Status = 'completed'";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            if (rs.next()) {
-                return rs.getDouble("total");
+    public int insertOrder(Order order) {
+        int orderId = 0;
+
+        String sql = "INSERT INTO orders (user_id, table_id, order_type, status, total_price, order_time) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, order.getUserId());
+            if (order.getTableId() != null) {
+                stmt.setInt(2, order.getTableId());
+            } else {
+                stmt.setNull(2, java.sql.Types.INTEGER);
             }
-        } catch (SQLException e) {
+            stmt.setString(3, order.getOrderType());
+            stmt.setString(4, order.getOrderStatus());
+            stmt.setDouble(5, order.getTotalPrice());
+            stmt.setTimestamp(6, order.getOrderTime());
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        orderId = rs.getInt(1);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0.0;
+
+        return orderId;
     }
 
-    // Get recent orders
-    public List<Order> getRecentOrders(int limit) {
+
+    // Get all orders placed by a specific user (waiter)
+    public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * FROM Orders ORDER BY Order_Time DESC LIMIT ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, limit);
+        String sql = "SELECT * FROM orders WHERE User_ID = ? ORDER BY Order_Time DESC";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
-                orders.add(mapOrder(rs));
+                Order order = new Order();
+                order.setOrderId(rs.getInt("Order_ID"));
+                order.setUserId(rs.getInt("User_ID"));
+                order.setTableId(rs.getObject("Table_ID") != null ? rs.getInt("Table_ID") : null);
+                order.setOrderType(rs.getString("Order_Type"));
+                order.setOrderTime(rs.getTimestamp("Order_Time"));
+                order.setOrderStatus(rs.getString("Order_Status"));
+                order.setTotalPrice(rs.getDouble("Total_Price"));
+
+                orders.add(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return orders;
     }
 
-    // Map ResultSet to Order object
-    private Order mapOrder(ResultSet rs) throws SQLException {
-        Order order = new Order();
-        order.setOrderId(rs.getInt("Order_ID"));
-        order.setUserId(rs.getInt("User_ID"));
-        order.setTableId(rs.getInt("Table_ID"));
-        order.setOrderType(rs.getString("Order_Type"));
-        order.setOrderDate(rs.getTimestamp("Order_Time"));
-        order.setStatus(rs.getString("Order_Status"));
-        order.setTotalAmount(rs.getDouble("Total_Price"));
-        return order;
-    }
+    // Optional: get a specific order by ID
+    public Order getOrderById(int orderId) {
+        String sql = "SELECT * FROM orders WHERE Order_ID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, orderId);
+            ResultSet rs = stmt.executeQuery();
 
-    // Optionally get order count
-    public int getTotalOrderCount() {
-        String query = "SELECT COUNT(*) AS total FROM Orders";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
             if (rs.next()) {
-                return rs.getInt("total");
+                Order order = new Order();
+                order.setOrderId(rs.getInt("Order_ID"));
+                order.setUserId(rs.getInt("User_ID"));
+                order.setTableId(rs.getObject("Table_ID") != null ? rs.getInt("Table_ID") : null);
+                order.setOrderType(rs.getString("Order_Type"));
+                order.setOrderTime(rs.getTimestamp("Order_Time"));
+                order.setOrderStatus(rs.getString("Order_Status"));
+                order.setTotalPrice(rs.getDouble("Total_Price"));
+
+                return order;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+
+        return null;
+    }
+    
+    
+    public List<Order> getRecentOrders(int limit) { return new ArrayList<>(); }
+    public int getTotalOrderCount() { return 0; }
+    public double getTotalSales() { return 0.0; }
+    public int getUnpaidOrdersCount() { return 0; }
+
+    // For PaymentController
+    public boolean updateOrderStatus(int orderId, String status) {
+        String sql = "UPDATE orders SET Order_Status = ? WHERE Order_ID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, orderId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public List<Order> getAllOrders() {
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders");
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderId(rs.getInt("order_id"));
+                order.setUserId(rs.getInt("user_id"));
+                order.setTableId(rs.getInt("table_id"));
+                order.setOrderType(rs.getString("order_type"));
+                order.setOrderStatus(rs.getString("status"));
+                order.setTotalPrice(rs.getDouble("total_price"));
+                order.setOrderTime(rs.getTimestamp("order_time"));
+
+                orders.add(order);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Optionally use a logger
+        }
+
+        return orders;
     }
 
-    // Optional: get number of orders by status
-    public int getOrdersByStatus(String status) {
-        String query = "SELECT COUNT(*) AS total FROM Orders WHERE Order_Status = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+    
+    
+    public List<Order> getOrdersByStatus(String status) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE orderStatus = ? ORDER BY orderTime DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, status);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total");
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderId(rs.getInt("orderId"));
+                order.setUserId(rs.getInt("userId"));
+                order.setOrderTime(rs.getTimestamp("orderTime"));
+                order.setOrderType(rs.getString("orderType"));
+                order.setOrderStatus(rs.getString("orderStatus"));
+                order.setTotalPrice(rs.getDouble("totalPrice"));
+                order.setTableId((Integer) rs.getObject("tableId"));
+                orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+
+        return orders;
     }
+
+
+    
 }

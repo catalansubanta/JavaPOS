@@ -31,7 +31,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
-        boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
+        boolean isLoggedIn = (session != null && session.getAttribute("loggedInUser") != null);
         String loginURI = httpRequest.getContextPath() + "/Pages/auth/login.jsp";
         boolean isLoginRequest = httpRequest.getRequestURI().equals(loginURI);
 

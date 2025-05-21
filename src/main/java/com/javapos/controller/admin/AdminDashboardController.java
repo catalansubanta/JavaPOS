@@ -31,25 +31,38 @@ public class AdminDashboardController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get recent 5 orders
         List<Order> recentOrders = orderDAO.getRecentOrders(5);
-
-        // Get recent 5 users
         List<User> recentUsers = userDAO.getRecentUsers(5);
 
-        // Get user role counts
-        int adminCount = userDAO.countByRole("Admin");
-        int cashierCount = userDAO.countByRole("Cashier");
-        int waiterCount = userDAO.countByRole("Waiter");
+        double totalSales = orderDAO.getTotalSales();
+        int totalOrders = orderDAO.getTotalOrderCount();
+        int pendingOrders = orderDAO.getUnpaidOrdersCount();
 
-        // Set attributes for JSP
-        request.setAttribute("recentOrders", recentOrders);
-        request.setAttribute("recentUsers", recentUsers);
+        int adminCount = userDAO.countByRole("admin");
+        int cashierCount = userDAO.countByRole("cashier");
+        int waiterCount = userDAO.countByRole("waiter");
+
+        // Set attributes for the JSP
+        request.setAttribute("totalSales", totalSales);
+        request.setAttribute("totalOrders", totalOrders);
+        request.setAttribute("pendingOrders", pendingOrders);
         request.setAttribute("adminCount", adminCount);
         request.setAttribute("cashierCount", cashierCount);
         request.setAttribute("waiterCount", waiterCount);
+        request.setAttribute("recentOrders", recentOrders);
+        request.setAttribute("recentUsers", recentUsers);
 
-        // Forward to JSP
-        request.getRequestDispatcher("/Pages/Admin/admin-dashboard.jsp").forward(request, response);
+        
+        System.out.println("Total Sales: " + totalSales);
+        System.out.println("Total Orders: " + totalOrders);
+        System.out.println("Pending Orders: " + pendingOrders);
+        System.out.println("Admins: " + adminCount);
+        System.out.println("Cashiers: " + cashierCount);
+        System.out.println("Waiters: " + waiterCount);
+        System.out.println("Recent Orders size: " + recentOrders.size());
+        System.out.println("Recent Users size: " + recentUsers.size());
+        // Forward only once
+        request.getRequestDispatcher("/Pages/Dashboard/admin-dashboard.jsp").forward(request, response);
     }
+
 }

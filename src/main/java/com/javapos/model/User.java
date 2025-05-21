@@ -9,6 +9,7 @@ public class User {
     private String phone;
     private String role;
     private int id;
+    private String status;
 
     // Default constructor
     public User() {
@@ -21,13 +22,14 @@ public class User {
         
         
     // Constructor with all fields
-    public User(String username, String password, String fullName, String email, String phone, String role) {
+    public User(String username, String password, String fullName, String email, String phone, String role, String status) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.status = status;
     }
 
     // Getters and Setters
@@ -94,4 +96,13 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

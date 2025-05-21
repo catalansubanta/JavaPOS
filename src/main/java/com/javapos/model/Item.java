@@ -1,14 +1,18 @@
 package com.javapos.model;
 
+import java.math.BigDecimal;
+
 public class Item {
     private int itemId;
     private String itemName;
     private String description;
     private double price;
+    private BigDecimal itemPrice;
     private String category;
     private float stock;
     private String unit;
     private String imagePath;
+	
 
     // Constructors
     public Item() {}
@@ -17,11 +21,12 @@ public class Item {
         this.itemId = itemId;
         this.itemName = itemName;
         this.description = description;
-        this.price = price;
+        setPrice(price);
         this.category = category;
         this.stock = stock;
         this.unit = unit;
         this.imagePath = imagePath;
+        
     }
 
     // Getters and Setters
@@ -34,8 +39,23 @@ public class Item {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public double getPrice() { 
+    	return price; 
+    	}
+    public void setPrice(double price) { 
+    	this.price = price; 
+    	this.itemPrice = BigDecimal.valueOf(price);
+    	}
+    
+    public BigDecimal getItemPrice() {
+    	return itemPrice;
+    	
+    }
+    
+    public void setItemPrice(BigDecimal itemPrice) {
+    	this.itemPrice = itemPrice;
+    	this.price = itemPrice.doubleValue();
+    }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }

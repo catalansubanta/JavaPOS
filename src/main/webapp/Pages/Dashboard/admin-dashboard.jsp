@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpSession" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="javax.servlet.*, javax.servlet.http.*, javax.servlet.annotation.*" %>
+<%@ page import="com.javapos.model.User" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
-    if (session == null) {
-        // no session yet
-    } else {
-        // session exists, you can use session here
+    User user = (User) session.getAttribute("loggedInUser");
+    if (user == null || !"admin".equals(user.getRole())) {
+        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
+        return;
     }
 %>
 
@@ -41,12 +42,12 @@
                 <span>Users</span>
                 <p>Manage user accounts and roles</p>
             </a>
-            <a href="${pageContext.request.contextPath}/Pages/Orders/view-order.jsp" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Admin/admin-orders.jsp" class="action-card">
                 <i class="fas fa-clipboard-list"></i>
                 <span>Orders</span>
                 <p>View and manage orders</p>
             </a>
-            <a href="${pageContext.request.contextPath}/Pages/Reports/sales-report.jsp" class="action-card">
+            <a href="${pageContext.request.contextPath}/Pages/Admin/admin-report.jsp" class="action-card">
                 <i class="fas fa-chart-bar"></i>
                 <span>Reports</span>
                 <p>View performance and sales reports</p>
@@ -63,78 +64,97 @@
             </a>
         </div>
 
-        <!-- Sales & Users Charts -->
-        <div class="chart-container">
-            <h3>Sales Overview</h3>
-            <canvas id="salesChart"></canvas>
-        </div>
+        <!-- admin-dashboard.jsp -->
 
-        <div class="chart-container">
-            <h3>User Distribution</h3>
-            <canvas id="usersChart"></canvas>
-        </div>
+<div class="stats-container">
+  <div class="stat-card">
+    <h3>Total Sales</h3>
+    <p>Rs ${totalSales}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Total Orders</h3>
+    <p>${totalOrders}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Pending Orders</h3>
+    <p>${pendingOrders}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Admins</h3>
+    <p>${adminCount}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Cashiers</h3>
+    <p>${cashierCount}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Waiters</h3>
+    <p>${waiterCount}</p>
+  </div>
+</div>
 
-        <!-- Recent Orders -->
-        <div class="recent-container">
-            <div class="recent-header">
-                <h3>Recent Orders</h3>
-                <a href="${pageContext.request.contextPath}/admin/orders" class="btn">View All</a>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${recentOrders}" var="order">
-                        <tr>
-                            <td>${order.orderId}</td>
-                            <td>${order.customerName}</td>
-                            <td>$${order.totalAmount}</td>
-                            <td>${order.status}</td>
-                            <td>${order.orderDate}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+<hr>
 
-        <!-- Recent Users -->
-        <div class="recent-container">
-            <div class="recent-header">
-                <h3>Recent Users</h3>
-                <a href="${pageContext.request.contextPath}/admin/users" class="btn">View All</a>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${recentUsers}" var="user">
-                        <tr>
-                            <td>${user.userId}</td>
-                            <td>${user.fullName}</td>
-                            <td>${user.role}</td>
-                            <td>${user.email}</td>
-                            <td>${user.status}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+<div class="recent-section">
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>Recent Orders</h3>
+    <a href="${pageContext.request.contextPath}/Pages/Admin/admin-orders.jsp" class="btn">View All</a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <c:forEach var="order" items="${recentOrders}">
+        <tr>
+          <td>${order.orderId}</td>
+          <td>${order.customerName}</td>
+          <td>Rs ${order.totalAmount}</td>
+          <td>${order.status}</td>
+          <td>${order.orderDate}</td>
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
+</div>
 
-    </div>
+<hr>
+
+<div class="recent-section">
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>Recent Users</h3>
+    <a href="${pageContext.request.contextPath}/Pages/Admin/admin-users.jsp" class="btn">View All</a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <c:forEach var="user" items="${recentUsers}">
+        <tr>
+          <td>${user.userId}</td>
+          <td>${user.fullName}</td>
+          <td>${user.role}</td>
+          <td>${user.email}</td>
+          <td>${user.status}</td>
+        </tr>
+      </c:forEach>
+    </tbody>
+  </table>
+</div>
+
 
     <jsp:include page="/Pages/Common/footer.jsp" />
 

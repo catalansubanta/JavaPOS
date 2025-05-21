@@ -18,7 +18,7 @@ public class PaymentDAO {
         }
     }
 
-    // ✅ Add new payment
+    // Add new payment
     public boolean addPayment(Payment payment) {
         String sql = "INSERT INTO payment (Order_ID, Paid_Amount, Payment_Time, Payment_Status) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -33,7 +33,7 @@ public class PaymentDAO {
         return false;
     }
 
-    // ✅ Get payment by ID
+    // Get payment by ID
     public Payment getPaymentById(int paymentId) {
         String sql = "SELECT * FROM payment WHERE Payment_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -48,7 +48,7 @@ public class PaymentDAO {
         return null;
     }
 
-    // ✅ Get payments by Order ID
+    // Get payments by Order ID
     public List<Payment> getPaymentsByOrderId(int orderId) {
         List<Payment> paymentList = new ArrayList<>();
         String sql = "SELECT * FROM payment WHERE Order_ID = ?";
@@ -64,7 +64,7 @@ public class PaymentDAO {
         return paymentList;
     }
 
-    // ✅ Update payment status
+    // Update payment status
     public boolean updatePaymentStatus(int paymentId, String status) {
         String sql = "UPDATE payment SET Payment_Status = ? WHERE Payment_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -77,22 +77,38 @@ public class PaymentDAO {
         return false;
     }
 
-    // ✅ Get all payments
+    // Get all payments - corrected table name and debug print
     public List<Payment> getAllPayments() {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT * FROM payment ORDER BY Payment_Time DESC";
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+        String query = "SELECT Payment_ID AS paymentId, Order_ID AS orderId, Paid_Amount AS paidAmount, Payment_Time AS paymentTime, Payment_Status AS paymentStatus FROM payment";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                payments.add(mapPayment(rs));
+                Payment payment = new Payment();
+                payment.setPaymentId(rs.getInt("paymentId"));
+                payment.setOrderId(rs.getInt("orderId"));
+                payment.setPaidAmount(rs.getDouble("paidAmount"));
+                payment.setPaymentTime(rs.getTimestamp("paymentTime"));
+                payment.setPaymentStatus(rs.getString("paymentStatus"));
+
+                System.out.println("Loaded Payment ID: " + payment.getPaymentId()); // Debug print
+
+                payments.add(payment);
             }
+
+            System.out.println("Total payments loaded: " + payments.size()); // Debug print
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return payments;
     }
 
-    // ✅ Map ResultSet to Payment object
+    // Map ResultSet to Payment object
     private Payment mapPayment(ResultSet rs) throws SQLException {
         return new Payment(
             rs.getInt("Payment_ID"),

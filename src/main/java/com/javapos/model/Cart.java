@@ -6,8 +6,9 @@ public class Cart {
     private int cartId;
     private int userId;
     private int itemId;
-    private int quality;
+    private int quantity;
     private Date createdAt;
+    private Item item;
 
     // Getters and Setters
     public int getCartId() {
@@ -34,12 +35,12 @@ public class Cart {
         this.itemId = itemId;
     }
 
-    public int getQuality() {
-        return quality;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuality(int quality) {
-        this.quality = quality;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Date getCreatedAt() {
@@ -48,5 +49,13 @@ public class Cart {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

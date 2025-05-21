@@ -4,6 +4,7 @@ public class TableNo {
     private int tableId;
     private int tableNumber;
     private String tableStatus;
+    private String reservationName;
 
     public TableNo() {}
 
@@ -36,5 +37,13 @@ public class TableNo {
 
     public void setTableStatus(String tableStatus) {
         this.tableStatus = tableStatus;
+    }
+    
+    public String getReservationName() {
+    	return reservationName;
+    }
+    
+    public void setReservationName(String reservationName) {
+    	this.reservationName = reservationName;
     }
 }

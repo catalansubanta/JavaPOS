@@ -2,13 +2,15 @@
 <%@ page import="com.javapos.model.User" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <%
-    
+    String currentPage = request.getParameter("currentPage") != null ? request.getParameter("currentPage") : "";
     String userType = "";
-    if (session.getAttribute("user") != null) {
-        User user = (User) session.getAttribute("user");
+    if (session.getAttribute("loggedInUser") != null) {
+        User user = (User) session.getAttribute("loggedInUser");
         userType = user.getRole();
         request.setAttribute("userType", userType); 
+        request.setAttribute("currentPage", currentPage); 
     }
 %>
 
@@ -24,15 +26,18 @@
 <header class="main-header">
     <div class="header-content">
         <h1 class="logo">Restaurant POS</h1>
+        <div class="user-info">
+    <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+            <span>Welcome, ${sessionScope.loggedInUser.fullName}</span>
+            <a href="${pageContext.request.contextPath}/logout" class="btn">Logout</a>
+        </c:when>
+        <c:otherwise>
+            <a href="${pageContext.request.contextPath}/Pages/auth/login.jsp" class="btn">Login</a>
+        </c:otherwise>
+    </c:choose>
+</div>
 
-        <c:if test="${not empty sessionScope.user}">
-            <div class="user-info">
-                <span>Welcome, ${sessionScope.user.fullName}</span>
-                <a href="${pageContext.request.contextPath}/logout" class="btn">Logout</a>
-            </div>
-        </c:if>
-    </div>
-
-   
+    <br>
     <jsp:include page="/Pages/Common/navigation-bar.jsp" />
 </header>

@@ -3,11 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    User user = (User) session.getAttribute("user");
-    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
-        return;
-    }
+
+		User user = (User) session.getAttribute("loggedInUser");
+		if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+			response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
+			return;
+}
 %>
 <% String success = request.getParameter("success");
    String error = request.getParameter("error");
