@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     User currentUser = (User) session.getAttribute("loggedInUser");
-    request.setAttribute("currentUser", currentUser); // <-- Add this line
+    request.setAttribute("currentUser", currentUser); 
     request.setAttribute("currentPage", "profile");
 %>
 <!DOCTYPE html>
@@ -36,6 +36,9 @@
 
             <a href="${pageContext.request.contextPath}/Pages/Profile/edit-profile.jsp" class="btn">
                 <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <a href="${pageContext.request.contextPath}/Pages/Profile/edit-password.jsp" class="btn">
+                <i class="fas fa-edit"></i> Change Password
             </a>
         </div>
     </div>

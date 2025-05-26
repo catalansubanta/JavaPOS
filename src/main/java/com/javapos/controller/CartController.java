@@ -8,6 +8,7 @@ import com.javapos.model.Cart;
 import com.javapos.model.Item;
 import com.javapos.model.Order;
 import com.javapos.model.OrderItem;
+import com.javapos.model.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -33,16 +34,13 @@ public class CartController extends HttpServlet {
         orderDAO = new OrderDAO();
         orderItemDAO = new OrderItemDAO();
     }
-    
-    
-    
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        com.javapos.model.User user = (com.javapos.model.User) session.getAttribute("loggedInUser");
+        User user = (User) session.getAttribute("loggedInUser");
 
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
@@ -50,23 +48,20 @@ public class CartController extends HttpServlet {
         }
 
         List<Cart> cartItems = cartDAO.getCartByUserId(user.getUserId());
-
-        // Load item info for display
         for (Cart cart : cartItems) {
             Item item = itemDAO.getItemById(cart.getItemId());
-            cart.setItem(item); // Ensure Cart.java has an `Item` field
+            cart.setItem(item); // assuming Cart model has Item reference
         }
 
         request.setAttribute("cartItems", cartItems);
         request.getRequestDispatcher("/Pages/Waiter/waiter-cart.jsp").forward(request, response);
     }
 
-    
-    
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
         String action = request.getParameter("action");
 
         if (action == null) {
@@ -82,7 +77,7 @@ public class CartController extends HttpServlet {
                 removeFromCart(request, response);
                 break;
             case "submit":
-                submitCartAsOrder(request, response);
+                submitCartAsOrder(request, response, session);
                 break;
             default:
                 response.sendRedirect("Pages/Waiter/waiter-menu-list.jsp");
@@ -91,14 +86,10 @@ public class CartController extends HttpServlet {
 
     private void addToCart(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-    	System.out.println("Add to Cart called");
-    	
         int userId = Integer.parseInt(request.getParameter("userId"));
         int itemId = Integer.parseInt(request.getParameter("itemId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         String tableId = request.getParameter("tableId");
-        
-        System.out.println("userId: " + userId + ", itemId: " + itemId + ", quantity: " + quantity);
 
         Cart cart = new Cart();
         cart.setUserId(userId);
@@ -106,20 +97,13 @@ public class CartController extends HttpServlet {
         cart.setQuantity(quantity);
 
         boolean success = cartDAO.addOrUpdateCart(cart);
-
-        
         HttpSession session = request.getSession();
-        if (success) {
-            session.setAttribute("cartMessage", "Item added to cart!");
-        } else {
-            session.setAttribute("cartMessage", "Failed to add item to cart.");
-        }
+        session.setAttribute("cartMessage", success ? "Item added to cart!" : "Failed to add item to cart.");
 
-        
         if (tableId != null && !tableId.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/Pages/Waiter/table-orders.jsp?tableId=" + tableId);
         } else {
-            response.sendRedirect(request.getContextPath() + "/Pages/Waiter/waiter-cart.jsp"); // fallback
+            response.sendRedirect(request.getContextPath() + "/Pages/Waiter/waiter-cart.jsp");
         }
     }
 
@@ -136,32 +120,26 @@ public class CartController extends HttpServlet {
         }
     }
 
-
-    private void submitCartAsOrder(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+    private void submitCartAsOrder(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
         String orderType = request.getParameter("orderType");
-
         int tableId = 0;
+
         if ("dinein".equalsIgnoreCase(orderType)) {
-            String tableIdStr = request.getParameter("tableId");
-            if (tableIdStr != null) {
-                try {
-                    tableId = Integer.parseInt(tableIdStr);
-                } catch (NumberFormatException e) {
-                    tableId = 0;
-                }
+            try {
+                tableId = Integer.parseInt(request.getParameter("tableId"));
+            } catch (NumberFormatException ignored) {
             }
         }
 
         List<Cart> cartItems = cartDAO.getCartByUserId(userId);
         if (cartItems == null || cartItems.isEmpty()) {
-            request.setAttribute("error", "Cart is empty.");
-            request.getRequestDispatcher("/Pages/Waiter/waiter-cart.jsp").forward(request, response);
+            session.setAttribute("cartMessage", "Cart is empty.");
+            response.sendRedirect("Pages/Waiter/table-orders.jsp?tableId=" + tableId);
             return;
         }
 
-        // Calculate total
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (Cart cart : cartItems) {
             Item item = itemDAO.getItemById(cart.getItemId());
@@ -170,7 +148,6 @@ public class CartController extends HttpServlet {
             }
         }
 
-        // Insert order
         Order order = new Order();
         order.setUserId(userId);
         order.setOrderType(orderType);
@@ -181,7 +158,6 @@ public class CartController extends HttpServlet {
 
         int orderId = orderDAO.insertOrder(order);
 
-        // Insert order items
         for (Cart cart : cartItems) {
             Item item = itemDAO.getItemById(cart.getItemId());
             if (item != null) {
@@ -195,12 +171,8 @@ public class CartController extends HttpServlet {
             }
         }
 
-        // Clear cart
         cartDAO.clearCartByUser(userId);
-
-        response.sendRedirect(request.getContextPath() + "/Pages/Waiter/waiter-my-orders.jsp");
+        session.setAttribute("cartMessage", "Order confirmed successfully.");
+        response.sendRedirect("Pages/Waiter/table-orders.jsp?tableId=" + tableId);
     }
-
-
-
 }

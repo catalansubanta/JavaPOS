@@ -73,12 +73,15 @@
     <input type="hidden" name="action" value="add" />
     <input type="hidden" name="itemId" value="${item.itemId}" />
     <input type="hidden" name="userId" value="${sessionScope.loggedInUser.userId}" />
+    <input type="hidden" name="tableId" value="0" />
+    <input type="hidden" name="orderType" value="takeaway" />
     <label for="qty_${item.itemId}">Qty:</label>
     <input type="number" id="qty_${item.itemId}" name="quantity" value="1" min="1" max="100" required />
     <button type="submit" class="btn btn-primary">
         <i class="fas fa-cart-plus"></i> Add to Cart
     </button>
 </form>
+
                     </div>
                 </c:forEach>
             </c:when>

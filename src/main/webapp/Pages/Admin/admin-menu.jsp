@@ -84,8 +84,8 @@
                                 <td>${item.price}</td>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/menu-items/form?id=${item.itemId}" class="btn-icon" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+    										<i class="fas fa-edit"></i>
+									</a>
                                     <form action="${pageContext.request.contextPath}/menu-items/delete" method="post" style="display:inline;">
                                         <input type="hidden" name="id" value="${item.itemId}">
                                         <button type="submit" class="btn-icon" title="Delete"

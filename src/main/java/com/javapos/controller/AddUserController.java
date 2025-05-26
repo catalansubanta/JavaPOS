@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import com.javapos.utils.PasswordUtils;
 
 @WebServlet("/user/add")
 public class AddUserController extends HttpServlet {
@@ -20,11 +21,37 @@ public class AddUserController extends HttpServlet {
 	    String status = request.getParameter("status");
 	    
 	    if (status == null || status.isEmpty()) {
-	        status = "active"; // default status
+	        status = "active"; 
 	    }
+	    
+	    UserDAO userDAO = new UserDAO();
+
+        
+        if (userDAO.isUsernameExists(username)) {
+            request.setAttribute("message", "Username already exists.");
+            request.setAttribute("messageType", "error");
+            request.getRequestDispatcher("/Pages/Admin/admin-add-user.jsp").forward(request, response);
+            return;
+        }
+
+        if (userDAO.isEmailExists(email)) {
+            request.setAttribute("message", "Email already exists.");
+            request.setAttribute("messageType", "error");
+            request.getRequestDispatcher("/Pages/Admin/admin-add-user.jsp").forward(request, response);
+            return;
+        }
+
+        if (userDAO.isPhoneExists(phone)) {
+            request.setAttribute("message", "Phone number already exists.");
+            request.setAttribute("messageType", "error");
+            request.getRequestDispatcher("/Pages/Admin/admin-add-user.jsp").forward(request, response);
+            return;
+        }
+	    
+	    String hashedPassword = PasswordUtils.hash(password);
 
 	    User user = new User(username, password, fullName, email, phone, role, status);
-	    UserDAO userDAO = new UserDAO();
+	    
 
 	    boolean success = userDAO.registerUser(user);
 

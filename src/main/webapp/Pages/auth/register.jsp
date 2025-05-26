@@ -18,26 +18,33 @@
       <% } %>
 
       <form action="<%= request.getContextPath() %>/register" method="post">
-        <label>Full Name</label>
-        <input type="text" name="fullname" required />
+    <label>Full Name</label>
+    <input type="text" name="fullName" required />
 
-        <label>Email</label>
-        <input type="email" name="email" required />
+    <label>Email</label>
+    <input type="email" name="email" required />
 
-        <label>Username</label>
-        <input type="text" name="username" required />
+    <label>Username</label>
+    <input type="text" name="username" required />
 
-        <label>Phone</label>
-        <input type="text" name="phone" required />
+    <label>Phone</label>
+    <input type="text" name="phone" required />
 
-        <label>Password</label>
-        <input type="password" name="password" required />
+    <label>Password</label>
+    <input type="password" name="password" required />
 
-        <label>Confirm Password</label>
-        <input type="password" name="confirmPassword" required />
+    <label>Confirm Password</label>
+    <input type="password" name="confirmPassword" required />
 
-        <button type="submit">Register</button>
-      </form>
+    <label>Role</label>
+    <select name="role" required>
+      <option value="waiter">Waiter</option>
+      <option value="cashier">Cashier</option>
+    </select>
+
+    <button type="submit">Register</button>
+</form>
+
 
       <p>Already have an account? 
         <a href="<%= request.getContextPath() %>/Pages/auth/login.jsp">Login</a>

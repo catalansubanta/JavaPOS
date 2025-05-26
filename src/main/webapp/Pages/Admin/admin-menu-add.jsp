@@ -54,7 +54,7 @@
 
         <div class="form-group">
             <label for="price">Price (Rs):</label>
-            <input type="number" name="price" id="price" step="0.01" required>
+            <input type="number" name="price" id="price" step="0.01" min="1" required>
         </div>
         <br>
 
@@ -69,7 +69,7 @@
 
         <div class="form-group">
             <label for="stock">Stock:</label>
-            <input type="number" name="stock" id="stock" step="0.1" required>
+            <input type="number" name="stock" id="stock" step="0.1" min="1" required>
         </div>
         <br>
 
@@ -81,7 +81,7 @@
 
         <div class="form-group">
             <label for="imagePath">Image URL:</label>
-            <input type="url" name="imagePath" id="imagePath" placeholder="https://example.com/image.jpg" required>
+            <input type="url" name="imagePath" id="imagePath" placeholder="https://example.com/image.jpg">
         </div>
         <br>
 

@@ -96,9 +96,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/user/edit?id=${user.userId}" class="btn-icon" title="Edit">
-    									<i class="fas fa-edit"></i>
-									</a>
+                                    
                                     <form action="${pageContext.request.contextPath}/user/deactivate" method="post" style="display:inline;">
     									<input type="hidden" name="userId" value="${user.userId}" />
     									<button type="submit" class="btn-icon" title="Deactivate"
