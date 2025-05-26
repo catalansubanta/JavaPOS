@@ -29,6 +29,15 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String role = request.getParameter("role");
+        
+        
+        String confirmPassword = request.getParameter("confirmPassword");
+        if (!password.equals(confirmPassword)) {
+            request.setAttribute("error", "Passwords do not match.");
+            request.getRequestDispatcher("Pages/auth/register.jsp").forward(request, response);
+            return;
+        }
+
 
         // Hash the password
         String hashedPassword = PasswordUtils.hash(password);

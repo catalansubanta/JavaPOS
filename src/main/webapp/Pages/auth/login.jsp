@@ -38,7 +38,8 @@
 </form>
 
             <div class="register-link">
-                Don't have an account? <a href="register.jsp">Register here</a>
+                Don't have an account? <a href="<%= request.getContextPath() %>/Pages/auth/register.jsp">Register Here</a>
+                
             </div>
 </div>
 </div>

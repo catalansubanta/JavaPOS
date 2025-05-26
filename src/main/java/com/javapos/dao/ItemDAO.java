@@ -76,24 +76,26 @@ public class ItemDAO {
 
     // to Add new item
     public boolean addItem(Item item) {
-        String sql = "INSERT INTO items (Item_Name, Description, Price, Category, Stock, Unit) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO items (item_name, description, price, category, stock, unit, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, item.getItemName());
-            stmt.setString(2, item.getDescription());
-            stmt.setDouble(3, item.getPrice());
-            stmt.setString(4, item.getCategory());
-            stmt.setFloat(5, item.getStock());
-            stmt.setString(6, item.getUnit());
-            stmt.setString(7, item.getImagePath());
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        	
+        	stmt.setString(1, item.getItemName());      // item_name
+        	stmt.setString(2, item.getDescription());   // description
+        	stmt.setDouble(3, item.getPrice());         // price
+        	stmt.setString(4, item.getCategory());      // category
+        	stmt.setFloat(5, item.getStock());          // stock
+        	stmt.setString(6, item.getUnit());          // unit
+        	stmt.setString(7, item.getImagePath());
+            
+            int rows = stmt.executeUpdate();
+            return rows > 0;
 
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false; 
+        	}
         }
-
-        return false;
-    }
 
     // to Update item
     public boolean updateItem(Item item) {

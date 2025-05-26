@@ -9,6 +9,17 @@
         return;
     }
 %>
+<% 
+    String message = (String) request.getAttribute("message");
+    String messageType = (String) request.getAttribute("messageType");
+    if (message != null) {
+%>
+    <div class="alert <%= "success".equals(messageType) ? "alert-success" : "alert-danger" %>">
+        <%= message %>
+    </div>
+<%
+    }
+%>
 
 <!DOCTYPE html>
 <html>

@@ -2,6 +2,7 @@ package com.javapos.dao;
 
 import com.javapos.database.DatabaseConnection;
 import com.javapos.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,21 +19,57 @@ public class UserDAO {
             throw new RuntimeException("Cannot initialize UserDAO", e);
         }
     }
+    
+    private Connection getConnection() throws SQLException {
+        return DatabaseConnection.getConnection(); // make sure this class exists
+    }
 
     public User validateUser(String username, String password) {
-        String query = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+        String sql = "SELECT * FROM users WHERE Username = ?";
+        try (Connection conn = getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
 
-            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return mapUser(rs);
+                //String storedHash = rs.getString("Password");
+                //if (BCrypt.checkpw(password, storedHash)) {
+            	
+            	
+            	// temporary for unhashed method to be removed later after password changed
+            	String storedPassword = rs.getString("Password");
+                
+                // Add print statements for debugging
+                System.out.println("Entered Password: " + password);
+                System.out.println("Stored Password: " + storedPassword);
+
+                boolean match = false;
+
+                try {
+                    match = BCrypt.checkpw(password, storedPassword);
+                } catch (Exception e) {
+                    // Possibly not a hash, fallback to plain comparison
+                    System.out.println("BCrypt failed, trying plain comparison.");
+                }
+            	if (match || password.equals(storedPassword)) {
+                    // Password is correct, return the user object
+                    User user = new User();
+                    user.setUserId(rs.getInt("User_ID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setFullName(rs.getString("Full_Name"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPhone(rs.getString("Phone"));
+                    user.setRole(rs.getString("Role"));
+                    user.setStatus(rs.getString("status"));
+                    return user;
+                }
             }
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return null; // Invalid login
     }
 
     public boolean registerUser(User user) {
@@ -47,8 +84,10 @@ public class UserDAO {
             stmt.setString(5, user.getPhone());
             stmt.setString(6, user.getRole());
             stmt.setString(7, user.getStatus());
-
-            return stmt.executeUpdate() > 0;
+            
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+            
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -310,5 +349,41 @@ public class UserDAO {
 
         return user;
     }
+    
+ // Get the hashed password by username
+    public String getPasswordByUsername(String username) {
+        String sql = "SELECT Password FROM user WHERE Username = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("Password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // If no user found or error occurs
+    }
+
+    // Update password in DB
+    public boolean updatePassword(String username, String newHashedPassword) {
+        String sql = "UPDATE user SET Password = ? WHERE Username = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newHashedPassword);
+            stmt.setString(2, username);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 }

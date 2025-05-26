@@ -1,20 +1,13 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.javapos.model.Order" %>
-<%@ page import="com.javapos.dao.OrderDAO" %>
 <%@ page import="com.javapos.model.User" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-
-		User user = (User) session.getAttribute("loggedInUser");
-		if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-		response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
-		 	return;
-		}
-
-    OrderDAO orderDAO = new OrderDAO();
-    List<Order> orders = orderDAO.getAllOrders();
-    request.setAttribute("orderList", orders);
+    User user = (User) session.getAttribute("loggedInUser");
+    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+        response.sendRedirect(request.getContextPath() + "/Pages/auth/login.jsp");
+        return;
+    }
+    
 %>
 
 <!DOCTYPE html>
@@ -47,9 +40,9 @@
                     <td>${order.tableId}</td>
                     <td>${order.userId}</td>
                     <td>${order.orderType}</td>
-                    <td>${order.status}</td>
-                    <td>$${order.totalAmount}</td>
-                    <td>${order.orderDate}</td>
+                    <td>${order.orderStatus}</td>
+                    <td>$${order.totalPrice}</td>
+                    <td>${order.orderTime}</td>
                 </tr>
             </c:forEach>
         </tbody>
